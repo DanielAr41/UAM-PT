@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UAM_PT</title>
+
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body{
+            background-color: #fff8f5;
+        }
+
+        .top-logo {
+            border-bottom: 1px solid #dee2e6;
+            padding: 2rem;
+            background-color: #fff;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .titulo-cuenta {
+            margin: 0;
+            color: #FF8800;
+            font-size: 25px;
+        }
+
+        .logo-centrado {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            max-height: 60px;
+        }
+
+        .top-logo img {
+            max-height: 60px;
+        }
+
+
+        .content {
+            padding: 2rem;
+        }
+
+        footer {
+            margin-top: 2rem;
+        }
+
+        input[readonly],
+        textarea[readonly] {
+            background-color: #f0f0f0 !important;
+            cursor: not-allowed;
+        }
+
+        .swal-small-modal {
+    padding: 1rem !important;
+            border-radius: 1rem !important; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.swal-small-modal .swal2-title {
+    font-size: 1.90rem;
+    margin: 0.5rem 0;
+}
+
+            .swal-small-modal .swal2-html-container {
+                font-size: 0.95rem; /* o usa 12px, 13px, etc. */
+            }
+
+.swal-small-modal .swal2-icon.swal2-success {
+    width: 60px;
+    height: 60px;
+    border-width: 4px;
+}
+
+.swal-small-modal .swal2-icon.swal2-success [class^='swal2-success-line'] {
+    height: 4px;
+}
+
+.swal-small-modal .swal2-icon.swal2-success .swal2-success-ring,
+.swal-small-modal .swal2-icon.swal2-success .swal2-success-fix {
+    width: 60px;
+    height: 60px;
+}
+
+.swal-small-modal .swal2-actions {
+    margin-top: 0.5rem;
+}
+
+.swal-small-modal .swal2-confirm {
+                background-color: #FF8800 !important;
+    padding: 0.4rem 1rem;
+    font-size: 0.875rem;
+}
+
+    </style>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</head>
+
+<body>
+    <header class="top-logo">
+        <div class="header-content">
+            @if (ViewData["TitleHeader"] != null)
+            {
+                <h1 class="titulo-cuenta">@ViewData["TitleHeader"]</h1>
+            }
+            <img src="~/images/logo.png" alt="Logo de NovaMer" class="logo-centrado" />
+        </div>
+    </header>
+
+    <main role="main" class="container content">
+        @RenderBody()
+    </main>
+
+    <footer class="footer text-muted border-top text-center py-3">
+        &copy; 2025 - UAM Proyecto Terminal
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

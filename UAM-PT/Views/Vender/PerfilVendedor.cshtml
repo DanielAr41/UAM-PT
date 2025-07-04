@@ -1,0 +1,406 @@
+﻿@{
+    ViewData["Title"] = "PerfilVendedor";
+    //ViewData["TitleHeader"] = "Perfil de vendedor";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .btnNaranja {
+        background-color: #fff;
+        border-color: #FF8800;
+        color: #FF8800;
+    }
+
+        .btnNaranja:hover {
+            background-color: #FF8800;
+            border-color: #FF8800;
+            color: #fff;
+        }
+
+    #AddProducto[disabled] {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .tituloNaranja{
+        color: #FF8800;
+        font-size:25px;
+        
+        }
+
+
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background-color: #fff7f3;
+        color: #333;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: #fff1e8;
+    }
+
+    .logo {
+        height: 40px;
+    }
+
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .user-menu a {
+            text-decoration: none;
+            color: #000;
+        }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+    }
+
+    .banner img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .profile {
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .profile-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 1rem 0;
+        font-size: 14px;
+    }
+
+    .btn-new {
+        background-color: #ff9a00;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 1rem;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        font-weight: 600;
+    }
+
+        .tabs a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .tabs .active {
+            border-bottom: 2px solid #ff9a00;
+            color: #ff9a00;
+        }
+
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+
+    .product-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .product-image {
+        position: relative;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .edit-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        font-size: 14px;
+    }
+
+    .rating {
+        background-color: #eee;
+        padding: 2px 6px;
+        border-radius: 12px;
+    }
+
+    .btn-vermas {
+        background-color: #ff9a00;
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .ver-mas-container {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 1rem;
+        font-size: 13px;
+        color: #999;
+    }
+
+</style>
+
+@* <button type="submit" class="btn btnNaranja w-20 mb-2 me-2" id="AddProducto">
+    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+    Nuevo Producto
+</button> *@
+
+<button type="button" class="btn btnNaranja w-20 mb-2 me-2" id="regresar">
+    Regresar
+</button>
+
+
+<section class="banner">
+    <img src="~/images/banner.png" alt="Banner" />
+</section>
+
+<section class="profile">
+    <img src="~/images/Furina.webp" alt="Usuario" class="profile-img" />
+    <h2>Tus productos</h2>
+    <p>Ciudad de México, México</p>
+    <div class="stats">
+        <span><strong>245</strong> Órdenes</span>
+        <span><strong>78</strong> Clientes</span>
+        <span><strong>28</strong> Productos</span>
+    </div>
+    <button class="btn-new" id="AddProducto">Nuevo Producto</button>
+</section>
+
+<nav class="tabs">
+    <a href="#" class="active">Todos</a>
+    <a href="#">Resumen de Ventas</a>
+    <a href="#">Más vendidos</a>
+    <a href="#">Inactivos</a>
+</nav>
+
+<main id="contenedor-productos" class="products">
+    @* <div class="product-card">
+        <div class="product-image">
+            <img src="producto1.jpg" alt="Producto 1" />
+            <button class="edit-btn">✏️</button>
+        </div>
+        <h3>Producto 1</h3>
+        <p>Descripción del producto 1</p>
+        <div class="info">
+            <span><strong>Precio:</strong> $250.26</span>
+            <span class="rating">⭐ 4.5</span>
+        </div>
+    </div> *@
+</main>
+
+<div class="ver-mas-container">
+    <button class="btn-vermas">Ver más</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="mdlAddProducto" tabindex="-1" aria-labelledby="mdlAddProductoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title tituloNaranja" id="mdlAddProductoLabel">Nuevo Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formAddProducto" enctype="multipart/form-data">
+
+                    <!-- Imagen -->
+                    <div class="mb-3">
+                        <label for="productoImagen" class="form-label text-center d-block">Imagen del producto</label>
+                        <input type="file" class="form-control" id="productoImagen" name="Imagen" accept="image/*">
+                    </div>
+
+                    <!-- Nombre y SKU -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="productoNombre" class="form-label">Nombre del producto</label>
+                            <input type="text" class="form-control" id="productoNombre" name="Nombre" required>
+                        </div>
+                        <div class="col">
+                            <label for="productoSKU" class="form-label">SKU</label>
+                            <input type="text" class="form-control" id="productoSKU" name="SKU">
+                        </div>
+                    </div>
+
+                    <!-- Precio y Categoría -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="productoPrecio" class="form-label">Precio</label>
+                            <input type="number" step="0.01" class="form-control" id="productoPrecio" name="Precio" required>
+                        </div>
+                        <div class="col">
+                            <label for="productoCategoria" class="form-label">Categoría</label>
+                            <select class="form-select" id="productoCategoria" name="CategoriaID" required>
+                                <option value="" selected>Selecciona una categoría</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Peso y Stock -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="productoPeso" class="form-label">Peso (kg)</label>
+                            <input type="number" step="0.01" class="form-control" id="productoPeso" name="Peso">
+                        </div>
+                        <div class="col">
+                            <label for="productoStock" class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="productoStock" name="Stock">
+                        </div>
+                    </div>
+
+                    <!-- Descuento y Precio con descuento -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="productoDescuento" class="form-label">Descuento (%)</label>
+                            <input type="number" step="0.01" class="form-control" id="productoDescuento" name="descuento">
+                        </div>
+                        <div class="col">
+                            <label for="productoPrecioDescuento" class="form-label">Precio con descuento</label>
+                            <input type="number" step="0.01" class="form-control" id="productoPrecioDescuento" name="precio_descuento">
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="mb-3">
+                        <label for="productoDescripcion" class="form-label">Descripción del producto</label>
+                        <textarea class="form-control" id="productoDescripcion" name="Descripcion" rows="3"></textarea>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" form="formAddProducto" class="btn btnNaranja">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="editarProductoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="formEditarProducto" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarProductoLabel">Editar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="ID" id="productoId" />
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombreProducto" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreProducto" name="Nombre" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="precioProducto" class="form-label">Precio</label>
+                            <input type="number" step="0.01" class="form-control" id="precioProducto" name="Precio" required />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcionProducto" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionProducto" name="Descripcion" rows="3"></textarea>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="stockProducto" class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="stockProducto" name="Stock" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="pesoProducto" class="form-label">Peso</label>
+                            <input type="number" step="0.01" class="form-control" id="pesoProducto" name="Peso" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imagenProducto" class="form-label">Imagen</label><br />
+                        <img id="vistaPreviaImagen" src="" alt="Vista previa" style="max-height: 150px; display:block; margin-bottom: 1rem;" />
+                        <input class="form-control" type="file" id="imagenProducto" name="Imagen" accept="image/*" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/PerfilVendedor.js"></script>
+

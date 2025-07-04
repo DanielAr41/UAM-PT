@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "NovaMer.com.mx";
+    Layout = "/Views/Shared/_LayoutMain.cshtml";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+</head>
+<body>
+    <section class="catalogo-container">
+        <h1>Catálogo de Productos</h1>
+        <div class="productos-grid" id="productosContainer">
+            <!-- Productos se cargarán aquí -->
+        </div>
+    </section>
+
+</body>
+</html>
+
+<script src="~/js/inicio.js"></script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .catalogo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .productos-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px;
+    }
+
+    .producto-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 15px;
+        transition: transform 0.2s;
+    }
+
+        .producto-card:hover {
+            transform: scale(1.03);
+        }
+
+        .producto-card img {
+            width: 100%;
+            border-radius: 4px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .producto-card h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+            color: #222;
+        }
+
+        .producto-card p {
+            font-size: 16px;
+            color: #007b5e;
+            font-weight: bold;
+        }
+
+</style>
+

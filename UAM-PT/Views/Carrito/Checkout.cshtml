@@ -1,0 +1,278 @@
+﻿
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <header class="header">
+        <a href="#" class="volver">&larr; Regresar al carrito de compras</a>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Nova_Mer_logo.png/2560px-Nova_Mer_logo.png" alt="NovaMer" class="logo">
+    </header>
+
+    <main class="contenedor">
+        <section class="formulario">
+            <h2>Proceder con la compra</h2>
+
+            <div class="bloque">
+                <h3>Información de contacto</h3>
+                <div class="grupo-doble">
+                    <input type="text" placeholder="Nombre(s)">
+                    <input type="text" placeholder="Apellido">
+                </div>
+                <div class="grupo-doble">
+                    <input type="text" placeholder="(+55) 000 111 22">
+                    <input type="email" placeholder="Correo electrónico">
+                </div>
+            </div>
+
+            <div class="bloque">
+                <h3>Selecciona la dirección de entrega</h3>
+                <input type="text" value="📍 Calle Benito Juarez #82, Cuajimalpa, Ciudad de México" readonly>
+                <textarea placeholder="Instrucción especial de entrega para el repartidor">Entre calle X y calle Y hasta el fondo</textarea>
+            </div>
+
+            <div class="bloque">
+                <h3>Fecha de entrega</h3>
+                <label><input type="radio" name="fecha" checked> Martes 18 de marzo de 2025</label><br>
+                <label><input type="radio" name="fecha"> Miércoles 19 de marzo de 2025</label>
+            </div>
+
+            <div class="bloque">
+                <h3>Método de pago</h3>
+                <label><input type="radio" name="pago" checked> Tarjeta de crédito/débito</label><br>
+                <label><input type="radio" name="pago"> Paypal</label><br>
+                <label><input type="radio" name="pago"> Pago en Oxxo</label>
+            </div>
+
+            <button class="btn-confirmar">Confirmar compra</button>
+        </section>
+
+        <aside class="resumen">
+            <div class="productos">
+                <h3>Productos <span class="editar">✎</span></h3>
+                <p class="cantidad">5 productos</p>
+                <div class="miniaturas">
+                    <img src="https://via.placeholder.com/30" alt="">
+                    <img src="https://via.placeholder.com/30" alt="">
+                    <img src="https://via.placeholder.com/30" alt="">
+                    <img src="https://via.placeholder.com/30" alt="">
+                    <img src="https://via.placeholder.com/30" alt="">
+                </div>
+                <div class="precio-total">
+                    <span>Total</span>
+                    <strong>$1,980.00</strong>
+                </div>
+            </div>
+
+            <div class="resumen-pedido">
+                <h3>Resumen del pedido</h3>
+                <div class="linea">
+                    <span>Productos en el carrito</span>
+                    <span>$1,980.00</span>
+                </div>
+                <div class="linea">
+                    <span>Envío</span>
+                    <span>$50.00</span>
+                </div>
+                <hr>
+                <div class="linea total">
+                    <span>Total a pagar</span>
+                    <strong>$2,030.00</strong>
+                </div>
+            </div>
+        </aside>
+    </main>
+</body>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .volver {
+        font-size: 0.9rem;
+        color: #555;
+        text-decoration: none;
+    }
+
+    .logo {
+        height: 40px;
+    }
+
+    .contenedor {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .formulario {
+        flex: 2;
+        min-width: 300px;
+    }
+
+        .formulario h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+    .bloque {
+        margin-top: 2rem;
+        border-top: 1px solid #ccc;
+        padding-top: 1rem;
+    }
+
+        .bloque h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+    .grupo-doble {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        background-color: #f1f5f9;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+
+    textarea {
+        resize: none;
+        height: 60px;
+        margin-top: 10px;
+    }
+
+    label {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    input[type="radio"] {
+        margin-right: 8px;
+    }
+
+    .btn-confirmar {
+        background-color: orange;
+        color: white;
+        padding: 12px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 2rem;
+    }
+
+        .btn-confirmar:hover {
+            background-color: darkorange;
+        }
+
+    /* Sidebar */
+    .resumen {
+        flex: 1;
+        min-width: 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .productos {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+
+        .productos h3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+    .editar {
+        font-size: 1.1rem;
+        cursor: pointer;
+    }
+
+    .cantidad {
+        font-size: 0.85rem;
+        color: #666;
+        margin: 0.5rem 0;
+    }
+
+    .miniaturas {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 0.5rem;
+    }
+
+        .miniaturas img {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+    .precio-total {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+
+    .resumen-pedido {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+
+        .resumen-pedido h3 {
+            margin-bottom: 1rem;
+        }
+
+    .linea {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+        .linea.total {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+    hr {
+        margin: 1rem 0;
+        border: none;
+        border-top: 1px solid #ccc;
+    }
+
+</style>
+

@@ -1,0 +1,262 @@
+﻿
+@{
+    ViewData["Title"] = "CarritoDeCompras";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<main class="contenedor">
+    <h2 class="titulo">Tu carrito de compras</h2>
+
+    <div class="contenido">
+        <!-- Lista de productos -->
+        <div class="productos">
+            <!-- Producto 1 -->
+            <div class="producto">
+                <img src="https://static.wixstatic.com/media/c837a6_56ac262818694d7db303f47390f2674a~mv2.jpg" alt="Huawei Watch">
+                <div class="info">
+                    <h3>Huawei Watch</h3>
+                    <p>Precio: $3,500.00</p>
+                </div>
+                <div class="precio">
+                    <span class="cantidad">1</span>
+                    <span class="monto">$3,500.00</span>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="producto">
+                <img src="https://i.pinimg.com/originals/d8/3b/7f/d83b7f1077d4c96ae4ae60b71fc1426e.jpg" alt="Bluetooth JBL">
+                <div class="info">
+                    <h3>Bluetooth JBL</h3>
+                    <p>Precio: $750</p>
+                </div>
+                <div class="precio">
+                    <span class="cantidad">2</span>
+                    <span class="monto">$750.00</span>
+                </div>
+            </div>
+
+            <a href="#" class="continuar">Continuar comprando</a>
+        </div>
+
+        <!-- Resumen de la orden -->
+        <div class="resumen">
+            <h3>Resumen de la orden</h3>
+            <div class="fila">
+                <span>Subtotal</span>
+                <span>$300</span>
+            </div>
+            <div class="fila">
+                <span>Código Promocional</span>
+                <input type="text" class="codigo">
+            </div>
+            <button class="btn-aplicar">Aplicar</button>
+            <div class="fila total">
+                <span>Total</span>
+                <span>$300</span>
+            </div>
+            <button class="btn-pago">Proceder al pago</button>
+        </div>
+    </div>
+</main>
+
+
+                <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid #eee;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+        .header .icono {
+            width: 24px;
+            margin-right: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+    .contenedor {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .titulo {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+
+    .contenido {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .productos {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .producto {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        padding: 1rem;
+    }
+
+        .producto img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .producto .info {
+            margin-left: 1rem;
+            flex: 1;
+        }
+
+            .producto .info h3 {
+                font-weight: bold;
+                margin-bottom: 0.2rem;
+            }
+
+            .producto .info p {
+                font-size: 0.9rem;
+                color: #666;
+            }
+
+    .precio {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .precio .cantidad {
+            background-color: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .precio .monto {
+            font-weight: bold;
+        }
+
+    .continuar {
+        font-size: 0.9rem;
+        color: #555;
+        text-decoration: underline;
+        margin-top: 1rem;
+    }
+
+    .resumen {
+        width: 100%;
+        max-width: 340px;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+        .resumen h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+    .fila {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0.8rem 0;
+        font-size: 0.95rem;
+    }
+
+    .codigo {
+        padding: 6px 10px;
+        border: none;
+        background: #f1f5f9;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        width: 50%;
+    }
+
+    .btn-aplicar {
+        background-color: #5C3D10;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-top: 0.5rem;
+    }
+
+        .btn-aplicar:hover {
+            background-color: #3e280b;
+        }
+
+    .total {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .btn-pago {
+        background-color: orange;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+        .btn-pago:hover {
+            background-color: darkorange;
+        }
+
+    .footer {
+        text-align: center;
+        padding: 2rem 0;
+        font-size: 0.85rem;
+        color: #777;
+        border-top: 1px solid #eee;
+        margin-top: 3rem;
+    }
+
+        .footer a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .footer a:hover {
+                text-decoration: underline;
+            }
+
+                </style>

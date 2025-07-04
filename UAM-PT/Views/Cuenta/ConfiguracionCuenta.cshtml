@@ -1,0 +1,311 @@
+﻿
+@{
+    // ViewData["Title"] = "ConfiguracionCuenta";
+    ViewData["TitleHeader"] = "Configuración de la cuenta";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .btnNaranja {
+        background-color: #fff;
+        border-color: #FF8800;
+        color: #FF8800;
+    }
+
+    .btnOrange{
+        background-color: #FF8800;
+        border-color: #FF8800;
+        color: #fff;
+    }
+
+        .btnNaranja:hover {
+            background-color: #FF8800;
+            border-color: #FF8800;
+            color: #fff;
+        }
+
+    #AddProducto[disabled] {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .tituloNaranja {
+        color: #FF8800;
+        font-size: 25px;
+    }
+
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h4 {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        margin-top: 40px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+        .form-group input,
+        .form-group select {
+            flex: 1;
+            padding: 10px 5px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            border-radius: 0;
+            outline: none;
+            transition: border-color 0.3s;
+            background-color: transparent;
+        }
+
+            .form-group input:focus,
+            .form-group select:focus {
+                border-bottom: 2px solid #FF8800;
+            }
+
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    /* button {
+        padding: 10px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background: #0056b3;
+        } */
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+
+
+    .modal-direccion .modal-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .modal-direccion .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: none;
+    }
+
+    .modal-direccion .container {
+        all: unset;
+    }
+
+    #mdlAddDireccion select.form-control {
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+        line-height: 1.5;
+        height: auto;
+    }
+
+
+</style>
+
+    <!-- Información Personal -->
+    <h4 class ="mt-2">Información personal</h4>
+    <div class="form-group">
+        <input type="text" placeholder="Nombres" id="Nombres">
+        <input type="text" placeholder="Apellido Paterno" id="Apaterno">
+        <input type="text" placeholder="Apellido Materno" id="Amaterno">
+    </div>
+    <div class="form-group">
+        <input type="tel" placeholder="Teléfono" id="Telefono">
+        <input type="email" placeholder="Correo electrónico" id="Correo" readonly>
+    </div>
+    <div class="form-actions">
+        <button class="btn btnNaranja w-20 mb-3" id="guardaInfoUsuario">Guardar información</button>
+        <button class="btn btnNaranja w-20 mb-3">Quiero vender</button>
+    </div>
+
+    <!-- Direcciones de Envío -->
+    <h4 class="mt-2">Direccion predeterminada</h4>
+    <div class="form-group">
+        <input type="text" id="calleNum" placeholder="Calle y Número" readonly>
+        <input type="text" id="Colonia" placeholder="Colonia" readonly>
+    </div>
+    <div class="form-group">
+        <input type="text" id="Estado" placeholder="Estado" readonly>
+        <input type="text" id="CodigoPostal" placeholder="Código Postal" readonly>
+    </div>
+    <div class="form-actions">
+        <button class="btn btnNaranja w-20 mb-3" id="AgregarDireccion">Agregar dirección</button>
+        <button class="btn btnNaranja w-20 mb-3" id="misDirecciones">Mis Direcciones</button>
+    </div>
+
+    <!-- Métodos de Pago -->
+    <h4 class="mt-2">Mis métodos de pago</h4>
+    <div class="form-group">
+        <input type="text" placeholder="Número de la tarjeta">
+        <input type="text" placeholder="Fecha de expiración (MM/AA)">
+        <input type="text" placeholder="Nombre del titular">
+    </div>
+    <div class="form-actions">
+        <button class="btn btnNaranja w-20 mb-3">Guardar método de pago</button>
+    </div>
+
+    <!-- Preferencias de notificaciones -->
+    <h4 class="mt-2">Preferencias de notificaciones</h4>
+    <div class="checkbox-group">
+        <input type="checkbox" id="boletines">
+        <label for="boletines">Recibir boletines y actualizaciones por correo.</label>
+    </div>
+    <div class="form-actions">
+        <button class="btn btnNaranja w-20 mb-3">Guardar preferencias</button>
+    </div>
+
+    <!-- Configuraciones de seguridad -->
+    <h4 class="mt-2">Configuraciones de seguridad</h4>
+    <div class="form-group">
+        <input type="password" placeholder="Contraseña actual">
+        <input type="password" placeholder="Nueva contraseña">
+    </div>
+    <div class="form-actions">
+        <button class="btn btnNaranja w-20 mb-3">Guardar contraseña</button>
+    </div>
+
+
+<!-- Modal Agregar dirección-->
+<!-- Modal -->
+<div class="modal fade modal-direccion" id="mdlAddDireccion" tabindex="-1" role="dialog" aria-labelledby="mdlAddDireccionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="mdlAddDireccionLabel">Agregar Dirección</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formAddDireccion">
+                    <!-- Fila 1: Calle, No. Interior, No. Exterior -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="calle" placeholder="Calle">
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input type="text" class="form-control" id="numInterior" placeholder="No. Interior">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input type="text" class="form-control" id="numExterior" placeholder="No. Exterior">
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Localidad, Municipio, Código Postal -->
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" id="localidad" placeholder="Localidad">
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" id="municipio" placeholder="Municipio">
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" id="codigoPostal" placeholder="Código Postal" maxlength="5" pattern="\d{5}">
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Estado, País -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <select class="form-control" id="estado">
+                                <option value="">Selecciona un estado</option>
+                                <option value="CDMX">Ciudad de México</option>
+                                <option value="JAL">Jalisco</option>
+                                <option value="NL">Nuevo León</option>
+                            </select>
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <select class="form-control" id="pais">
+                                <option value="">Selecciona un país</option>
+                                <option value="MX">México</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="CA">Canadá</option>
+                            </select>
+                            <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="guardarDireccion">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Modal-->
+
+<!-- Modal dirección predeterminada -->
+<div class="modal fade" id="modalDirecciones" tabindex="-1" role="dialog" aria-labelledby="modalDireccionesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDireccionesLabel">Mis direcciones</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" id="contenedorDirecciones">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarDireccionPredeterminada">Guardar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- End Modal-->
+
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btnOrange w-20 mb-2 me-2" id="regresar">
+        Regresar
+    </button>
+</div>
+
+<script src="~/js/ConfiguracionCuenta.js"></script>

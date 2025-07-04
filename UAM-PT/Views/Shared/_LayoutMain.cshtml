@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+
+<style>
+    .nav_logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+
+    .navSup {
+        position: relative;
+    }
+
+    .nav_container{
+        background: #fff;
+    }
+
+    .navSup{
+        background: #fff;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        padding: 10px; /* Espaciado opcional */
+    }
+
+    .nav_title {
+        font-weight: 300;
+        color: #fff
+    }
+
+    .nav_link {
+        margin-left: auto;
+       /*  padding: 0;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: max-content;
+        gap: 2em; */
+    }
+
+    .nav_items {
+        list-style: none;
+    }
+
+    .nav_links {
+        color: #1d1d10;
+        text-decoration: none;
+    }
+
+    .nav_links:hover {
+            color: #FF8800;
+    }
+
+    .nav_menu {
+        margin-left: auto;
+        cursor: pointer;
+        display: none;
+    }
+
+    .nav_img {
+        display: block;
+        width: 30px;
+    }
+
+    .nav_close {
+        display: var(--show, none);
+    }
+
+    .nav_items {
+        position: relative;
+        padding: 10px;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .nav_items:hover {
+        box-shadow: 0px 0px 10px #E0E0E0;
+        border-radius: 5px; 
+    }
+
+    .search-box {
+        max-width: 650px; /* Ajusta el tamaño del input */
+    }
+
+    .search-input {
+        padding-left: 15px; /* Espacio para el icono dentro del input */
+    }
+
+    .search-icon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: gray; /* Color del icono */
+    }
+
+    .search-icon:hover{
+        color: #FF8800;
+        cursor: pointer;
+    }
+
+    .nav_container{
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        
+    }
+
+    .nav_image {
+    width: 100px; /* Ajusta el tamaño de la imagen */
+    height: auto;
+}
+
+    .cart-icon:hover {
+        color: #FF8800;
+        cursor: pointer;
+        box-shadow: 0px 0px 10px #E0E0E0;
+        border-radius: 5px;
+    }
+
+
+</style>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UAM_PT</title>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+    @* <link rel="stylesheet" href="~/UAM_PT.styles.css" asp-append-version="true" /> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
+</head>
+
+<body>
+    <header class="hero">
+        <div class="navSup d-flex justify-content-between align-items-center px-3">
+            <!-- Contenedor izquierdo vacío para balancear -->
+            <div class="flex-grow-1 d-flex"></div>
+
+            <!-- Logo centrado -->
+            <div class="nav_logo text-center">
+                <img src="~/images/logo.png" alt="Logo" class="nav_image mx-auto d-block">
+            </div>
+
+            <!-- Contenedor derecho: buscador, carrito, menú -->
+            <div class="flex-grow-1 d-flex justify-content-end align-items-center">
+                <div class="position-relative search-box mr-3">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="form-control rounded-pill search-input" placeholder="Buscar...">
+                </div>
+
+                <div class="cart-icon carrito mr-3 position-relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                    </svg>
+                </div>
+
+                <div class="dropdown mr-3">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/Furina.webp" alt="Perfil" width="36" height="36" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="/Cuenta/ConfiguracionCuenta">Configuración de cuenta</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" id="MisPedidos" href="#">Mis pedidos</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" id="CerrarSesion" href="#">Cerrar sesión</a></li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Menú inferior -->
+        <div class="nav_container text-center mt-2">
+            <ul class="nav_link d-flex justify-content-center flex-wrap">
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2">Inicio</a></li>
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2">Nuevo</a></li>
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2">Lo más vendido</a></li>
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2">Descuentos</a></li>
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2">Categorías</a></li>
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2" id="vender">Vender</a></li>
+                <li class="nav_items"><a href="#" class="nav_links ms-2 me-2">Servicio al cliente</a></li>
+            </ul>
+        </div>
+    </header>
+
+
+    <div class="content-body">
+        <!-- Content -->
+        <div class="content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - UAM Proyecto Terminal
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
