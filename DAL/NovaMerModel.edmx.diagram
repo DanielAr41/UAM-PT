@@ -10,14 +10,18 @@
         <AssociationConnector Association="NovaMerModel.FK_Usuarios_RolUsuario" ManuallyRouted="false" />
         <EntityTypeShape EntityType="NovaMerModel.Categoria" Width="1.5" PointX="5.25" PointY="9.625" />
         <EntityTypeShape EntityType="NovaMerModel.Producto" Width="1.5" PointX="7.5" PointY="5" />
-        <EntityTypeShape EntityType="NovaMerModel.Vendedor" Width="1.5" PointX="5.25" PointY="5.5" />
         <AssociationConnector Association="NovaMerModel.FK_Producto_Categoria" />
-        <AssociationConnector Association="NovaMerModel.FK_Producto_Vendedor" />
-        <AssociationConnector Association="NovaMerModel.FK_Vendedor_Usuario" />
         <EntityTypeShape EntityType="NovaMerModel.ImgProducto" Width="1.5" PointX="9.75" PointY="5.875" />
         <AssociationConnector Association="NovaMerModel.FK_ImgProducto_Producto" />
         <EntityTypeShape EntityType="NovaMerModel.Direccione" Width="1.5" PointX="5.25" PointY="1" />
         <AssociationConnector Association="NovaMerModel.FK_Direcciones_Usuarios" />
+        <EntityTypeShape EntityType="NovaMerModel.MetodosPago" Width="1.5" PointX="6" PointY="13.375" />
+        <EntityTypeShape EntityType="NovaMerModel.MetodosPagoUsuario" Width="1.5" PointX="8.25" PointY="0.75" />
+        <AssociationConnector Association="NovaMerModel.FK_MetodoPagoUsuario_Metodo" />
+        <AssociationConnector Association="NovaMerModel.FK_MetodoPagoUsuario_Usuario" />
+        <EntityTypeShape EntityType="NovaMerModel.Vendedor" Width="1.5" PointX="5.25" PointY="16.25" />
+        <AssociationConnector Association="NovaMerModel.FK_Producto_Vendedor" />
+        <AssociationConnector Association="NovaMerModel.FK_Vendedor_Usuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

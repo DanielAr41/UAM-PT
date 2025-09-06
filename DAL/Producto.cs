@@ -34,8 +34,8 @@ namespace DAL
         public byte[] Imagen { get; set; }
     
         public virtual Categoria Categoria { get; set; }
-        public virtual Vendedor Vendedor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ImgProducto> ImgProductoes { get; set; }
+        public virtual Vendedor Vendedor { get; set; }
     }
 }

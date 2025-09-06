@@ -17,8 +17,9 @@ namespace DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Usuario()
         {
-            this.Vendedors = new HashSet<Vendedor>();
             this.Direcciones = new HashSet<Direccione>();
+            this.MetodosPagoUsuarios = new HashSet<MetodosPagoUsuario>();
+            this.Vendedors = new HashSet<Vendedor>();
         }
     
         public System.Guid ID { get; set; }
@@ -34,8 +35,10 @@ namespace DAL
     
         public virtual RolUsuario RolUsuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Vendedor> Vendedors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Direccione> Direcciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MetodosPagoUsuario> MetodosPagoUsuarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Vendedor> Vendedors { get; set; }
     }
 }

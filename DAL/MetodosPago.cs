@@ -12,27 +12,19 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Vendedor
+    public partial class MetodosPago
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Vendedor()
+        public MetodosPago()
         {
-            this.Productoes = new HashSet<Producto>();
+            this.MetodosPagoUsuarios = new HashSet<MetodosPagoUsuario>();
         }
     
-        public System.Guid ID { get; set; }
-        public System.Guid UsuarioID { get; set; }
-        public string RFC { get; set; }
-        public byte[] IMGCuentaBanco { get; set; }
-        public byte[] INE { get; set; }
-        public byte[] ImgComprobanteDomicilio { get; set; }
-        public Nullable<System.DateTime> FechaRegistro { get; set; }
-        public Nullable<bool> Activo { get; set; }
-        public string Curp { get; set; }
-        public string CuentaBancaria { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public bool Activo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Producto> Productoes { get; set; }
-        public virtual Usuario Usuario { get; set; }
+        public virtual ICollection<MetodosPagoUsuario> MetodosPagoUsuarios { get; set; }
     }
 }

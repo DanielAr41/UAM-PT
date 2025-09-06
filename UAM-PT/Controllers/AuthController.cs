@@ -43,6 +43,10 @@ namespace UAM_PT.Controllers
                     {
                         vendedorID = vendedor.ID;
                     }
+
+                    HttpContext.Session.SetString("UserId", user.ID.ToString());
+                    if (vendedorID.HasValue)
+                        HttpContext.Session.SetString("VendedorId", vendedorID.Value.ToString());
                 }
 
                 if (user == null)

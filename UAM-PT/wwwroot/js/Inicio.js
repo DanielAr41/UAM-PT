@@ -18,7 +18,7 @@ function traeProductos() {
 
             data.forEach(function (producto) {
                 const card = `
-                    <div class="producto-card">
+                    <div class="producto-card" data-pid="${producto.id}">
                         <img src="${producto.imagenUrl}" alt="${producto.nombre}">
                         <h3>${producto.nombre}</h3>
                         <p>$${producto.precio.toFixed(2)}</p>
@@ -46,4 +46,8 @@ $('#CerrarSesion').on('click', function () {
 
 $(document).on('click', '.carrito', function () {
     window.location.href = "/Carrito/CarritoDeCompras";
+});
+
+$(document).on('click', '#MisPedidos', function () {
+    window.location.href = "/Pedidos/MisPedidos";
 });

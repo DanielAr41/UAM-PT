@@ -16,6 +16,16 @@ builder.Services.AddControllers();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // tiempo de expiración
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddControllersWithViews();
+
 // Registrar el servicio de Email
 builder.Services.AddSingleton<EmailService>();
 
@@ -55,6 +65,7 @@ app.UseRouting();
 
 // Habilitar autenticación y autorización
 app.UseAuthentication();
+app.UseSession();
 app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute(

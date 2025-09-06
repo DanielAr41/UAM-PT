@@ -5,6 +5,13 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
+@if (TempData["MensajeVendedor"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["MensajeVendedor"]
+    </div>
+}
+
 
 <style>
     .btnNaranja {
@@ -146,7 +153,7 @@
     </div>
     <div class="form-actions">
         <button class="btn btnNaranja w-20 mb-3" id="guardaInfoUsuario">Guardar información</button>
-        <button class="btn btnNaranja w-20 mb-3">Quiero vender</button>
+    <button class="btn btnNaranja w-20 mb-3" id="quieroVenderBtn">Quiero vender</button>
     </div>
 
     <!-- Direcciones de Envío -->
@@ -165,15 +172,15 @@
     </div>
 
     <!-- Métodos de Pago -->
-    <h4 class="mt-2">Mis métodos de pago</h4>
+    <h4 class="mt-2">Método de pago predeterminado</h4>
     <div class="form-group">
-        <input type="text" placeholder="Número de la tarjeta">
-        <input type="text" placeholder="Fecha de expiración (MM/AA)">
-        <input type="text" placeholder="Nombre del titular">
+    <input type="text" id="inputMetodoPredeterminado" placeholder="Sin métodos de pago" readonly class="form-control">
     </div>
     <div class="form-actions">
-        <button class="btn btnNaranja w-20 mb-3">Guardar método de pago</button>
+    <button class="btn btn-primary w-20 mb-3" data-bs-toggle="modal" data-bs-target="#modalAgregarMetodo">Agregar método de pago</button>
+    <button class="btn btn-secondary w-20 mb-3" id="btnMisMetodos">Mis métodos de pago</button>
     </div>
+
 
     <!-- Preferencias de notificaciones -->
     <h4 class="mt-2">Preferencias de notificaciones</h4>
@@ -187,24 +194,124 @@
 
     <!-- Configuraciones de seguridad -->
     <h4 class="mt-2">Configuraciones de seguridad</h4>
-    <div class="form-group">
-        <input type="password" placeholder="Contraseña actual">
-        <input type="password" placeholder="Nueva contraseña">
-    </div>
-    <div class="form-actions">
-        <button class="btn btnNaranja w-20 mb-3">Guardar contraseña</button>
-    </div>
+<div class="form-group">
+    <input type="password" id="passwordActual" placeholder="Contraseña actual" class="form-control mb-2">
+    <input type="password" id="passwordNueva" placeholder="Nueva contraseña" class="form-control">
+</div>
+<div class="form-actions">
+    <button class="btn btnNaranja w-20 mb-3" id="btnCambiarPassword">Guardar contraseña</button>
+</div>
 
+
+<!-- Modal Agregar método de pago-->
+<div class="modal fade" id="modalAgregarMetodo" tabindex="-1" aria-labelledby="modalAgregarMetodoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarMetodoLabel">Agregar método de pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarMetodo">
+                    <div class="mb-3">
+                        <label for="metodoPago" class="form-label">Método de pago</label>
+                        <select class="form-select" id="metodoPago" name="MetodoPagoId" required>
+                            <option value="">-- Selecciona --</option>
+                            <option value="16">Tarjeta de crédito</option>
+                            <option value="17">Tarjeta de débito</option>
+                            <option value="18">PayPal</option>
+                            <option value="19">Mercado Pago</option>
+                            <option value="20">Pago en efectivo (OXXO)</option>
+                            <option value="21">Transferencia bancaria</option>
+                            <option value="22">SPEI</option>
+                        </select>
+                    </div>
+
+                    <!-- Sección Tarjetas -->
+                    <div class="campos-metodo d-none" data-metodo="16,17">
+                        <div class="mb-3">
+                            <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
+                            <input type="text" class="form-control" id="numeroTarjeta" name="NumeroTarjeta" placeholder="**** **** **** 1234">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaVencimiento" class="form-label">Fecha de vencimiento</label>
+                            <input type="month" class="form-control" id="fechaVencimiento" name="FechaVencimiento">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombreTitular" class="form-label">Nombre del titular</label>
+                            <input type="text" class="form-control" id="nombreTitular" name="NombreTitular">
+                        </div>
+                    </div>
+
+                    <!-- Sección PayPal -->
+                    <div class="campos-metodo d-none" data-metodo="18">
+                        <div class="mb-3">
+                            <label for="cuentaPaypal" class="form-label">Cuenta PayPal</label>
+                            <input type="email" class="form-control" id="cuentaPaypal" name="CuentaPaypal" placeholder="ejemplo@correo.com">
+                        </div>
+                    </div>
+
+                    <!-- Sección MercadoPago -->
+                    <div class="campos-metodo d-none" data-metodo="19">
+                        <div class="mb-3">
+                            <label for="cuentaMP" class="form-label">Cuenta Mercado Pago</label>
+                            <input type="email" class="form-control" id="cuentaMP" name="CuentaMercadoPago" placeholder="ejemplo@correo.com">
+                        </div>
+                    </div>
+
+                    <!-- Sección efectivo (OXXO) -->
+                    <div class="campos-metodo d-none" data-metodo="20">
+                        <p>Se generará una referencia para pagar en OXXO.</p>
+                    </div>
+
+                    <!-- Sección transferencia/SPEI -->
+                    <div class="campos-metodo d-none" data-metodo="21,22">
+                        <p>Se mostrarán los datos bancarios al confirmar la compra.</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formAgregarMetodo" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal-->
+
+<!-- Modal para listar métodos de pago -->
+<div class="modal fade" id="modalMisMetodos" tabindex="-1" aria-labelledby="modalMisMetodosLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMisMetodosLabel">Mis métodos de pago</h5>
+                <button type="button" class="btn btn-link p-0" data-bs-dismiss="modal" aria-label="Cerrar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="listaMetodosPago" class="list-group">
+                    <!-- Aquí se llenarán los métodos via AJAX -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal-->
 
 <!-- Modal Agregar dirección-->
-<!-- Modal -->
 <div class="modal fade modal-direccion" id="mdlAddDireccion" tabindex="-1" role="dialog" aria-labelledby="mdlAddDireccionLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
                 <h5 class="modal-title" id="mdlAddDireccionLabel">Agregar Dirección</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -267,7 +374,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="guardarDireccion">Guardar</button>
             </div>
         </div>
@@ -307,5 +414,71 @@
         Regresar
     </button>
 </div>
+
+<!-- Modal registro vendedor -->
+<div class="modal fade" id="mdlRegistroVendedor" tabindex="-1" aria-labelledby="documentosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Encabezado -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="documentosModalLabel">Datos del Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <!-- Cuerpo -->
+            <div class="modal-body">
+                <form id="documentosForm">
+
+                    <!-- RFC -->
+                    <div class="mb-3">
+                        <label for="rfc" class="form-label">RFC</label>
+                        <input type="text" class="form-control" id="rfc" name="rfc" maxlength="13" placeholder="Ingrese RFC">
+                    </div>
+
+                    <!-- CURP -->
+                    <div class="mb-3">
+                        <label for="curp" class="form-label">CURP</label>
+                        <input type="text" class="form-control" id="curp" name="curp" placeholder="Ingrese CURP">
+                    </div>
+
+                    <!-- Cuenta Bancaria -->
+                    <div class="mb-3">
+                        <label for="cuentaBancaria" class="form-label">Cuenta Bancaria</label>
+                        <input type="text" class="form-control" id="cuentaBancaria" name="cuentaBancaria" placeholder="Ingrese Cuenta Bancaria">
+                    </div>
+
+                    <!-- Recuadros de previsualización -->
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <label class="form-label fw-bold">Identificación</label>
+                            <div class="border rounded p-2 mb-2" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                                <img id="previewIdentificacion" src="" alt="Previsualización" style="max-height: 100%; max-width: 100%; display: none;">
+                            </div>
+                            <input type="file" class="form-control" id="identificacion" accept="image/*">
+                        </div>
+
+                        <div class="col-md-6 text-center">
+                            <label class="form-label fw-bold">Comprobante de domicilio</label>
+                            <div class="border rounded p-2 mb-2" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                                <img id="previewComprobante" src="" alt="Previsualización" style="max-height: 100%; max-width: 100%; display: none;">
+                            </div>
+                            <input type="file" class="form-control" id="comprobanteDomicilio" accept="image/*">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="documentosForm" id="btnRegistrarVendedor" class="btn btn-primary">Aceptar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Modal-->
 
 <script src="~/js/ConfiguracionCuenta.js"></script>

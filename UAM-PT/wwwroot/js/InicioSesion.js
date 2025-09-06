@@ -81,7 +81,6 @@ $(document).on('click', '#registro', function (e) {
     }
 
     $.ajax({
-        //url: `/Auth/RegistrarUsuario?nombre=${nombre}&aPaterno=${apellidop}&aMaterno=${apellidom}&correo=${correo}&pass=${contrasenia}&telefono=${telefono}`,
         url: '/Auth/RegistrarUsuario',
         type: "POST",
         contentType: "application/json",

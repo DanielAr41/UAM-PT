@@ -43,6 +43,29 @@
           <Property Name="FechaRegistro" Type="date" Nullable="false" />
           <Property Name="Activo" Type="bit" />
         </EntityType>
+        <EntityType Name="MetodosPago">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MetodosPagoUsuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsuarioId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MetodoPagoId" Type="int" Nullable="false" />
+          <Property Name="NumeroTarjeta" Type="nvarchar" MaxLength="25" />
+          <Property Name="FechaVencimiento" Type="date" />
+          <Property Name="NombreTitular" Type="nvarchar" MaxLength="150" />
+          <Property Name="CuentaPaypal" Type="nvarchar" MaxLength="150" />
+          <Property Name="CuentaMercadoPago" Type="nvarchar" MaxLength="150" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="EsPredeterminado" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Producto">
           <Key>
             <PropertyRef Name="ID" />
@@ -96,6 +119,8 @@
           <Property Name="ImgComprobanteDomicilio" Type="varbinary(max)" />
           <Property Name="FechaRegistro" Type="date" />
           <Property Name="Activo" Type="bit" />
+          <Property Name="Curp" Type="nvarchar" MaxLength="18" />
+          <Property Name="CuentaBancaria" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <Association Name="FK_Direcciones_Usuarios">
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
@@ -118,6 +143,30 @@
             </Principal>
             <Dependent Role="ImgProducto">
               <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetodoPagoUsuario_Metodo">
+          <End Role="MetodosPago" Type="Self.MetodosPago" Multiplicity="1" />
+          <End Role="MetodosPagoUsuario" Type="Self.MetodosPagoUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodosPago">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MetodosPagoUsuario">
+              <PropertyRef Name="MetodoPagoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetodoPagoUsuario_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="MetodosPagoUsuario" Type="Self.MetodosPagoUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MetodosPagoUsuario">
+              <PropertyRef Name="UsuarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -173,6 +222,8 @@
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Direcciones" EntityType="Self.Direcciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImgProducto" EntityType="Self.ImgProducto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MetodosPago" EntityType="Self.MetodosPago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MetodosPagoUsuario" EntityType="Self.MetodosPagoUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RolUsuario" EntityType="Self.RolUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -184,6 +235,14 @@
           <AssociationSet Name="FK_ImgProducto_Producto" Association="Self.FK_ImgProducto_Producto">
             <End Role="Producto" EntitySet="Producto" />
             <End Role="ImgProducto" EntitySet="ImgProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetodoPagoUsuario_Metodo" Association="Self.FK_MetodoPagoUsuario_Metodo">
+            <End Role="MetodosPago" EntitySet="MetodosPago" />
+            <End Role="MetodosPagoUsuario" EntitySet="MetodosPagoUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetodoPagoUsuario_Usuario" Association="Self.FK_MetodoPagoUsuario_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="MetodosPagoUsuario" EntitySet="MetodosPagoUsuario" />
           </AssociationSet>
           <AssociationSet Name="FK_Producto_Categoria" Association="Self.FK_Producto_Categoria">
             <End Role="Categoria" EntitySet="Categoria" />
@@ -231,8 +290,9 @@
           <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Activo" Type="Boolean" />
           <NavigationProperty Name="RolUsuario" Relationship="Self.FK_Usuarios_RolUsuario" FromRole="Usuarios" ToRole="RolUsuario" />
-          <NavigationProperty Name="Vendedors" Relationship="NovaMerModel.FK_Vendedor_Usuario" FromRole="Usuario" ToRole="Vendedor" />
           <NavigationProperty Name="Direcciones" Relationship="NovaMerModel.FK_Direcciones_Usuarios" FromRole="Usuario" ToRole="Direccione" />
+          <NavigationProperty Name="MetodosPagoUsuarios" Relationship="NovaMerModel.FK_MetodoPagoUsuario_Usuario" FromRole="Usuario" ToRole="MetodosPagoUsuario" />
+          <NavigationProperty Name="Vendedors" Relationship="NovaMerModel.FK_Vendedor_Usuario" FromRole="Usuario" ToRole="Vendedor" />
         </EntityType>
         <Association Name="FK_Usuarios_RolUsuario">
           <End Role="RolUsuario" Type="Self.RolUsuario" Multiplicity="1" />
@@ -255,18 +315,9 @@
           </AssociationSet>
           <EntitySet Name="Categorias" EntityType="NovaMerModel.Categoria" />
           <EntitySet Name="Productoes" EntityType="NovaMerModel.Producto" />
-          <EntitySet Name="Vendedors" EntityType="NovaMerModel.Vendedor" />
           <AssociationSet Name="FK_Producto_Categoria" Association="NovaMerModel.FK_Producto_Categoria">
             <End Role="Categoria" EntitySet="Categorias" />
             <End Role="Producto" EntitySet="Productoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Producto_Vendedor" Association="NovaMerModel.FK_Producto_Vendedor">
-            <End Role="Vendedor" EntitySet="Vendedors" />
-            <End Role="Producto" EntitySet="Productoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Vendedor_Usuario" Association="NovaMerModel.FK_Vendedor_Usuario">
-            <End Role="Usuario" EntitySet="Usuarios" />
-            <End Role="Vendedor" EntitySet="Vendedors" />
           </AssociationSet>
           <EntitySet Name="ImgProductoes" EntityType="NovaMerModel.ImgProducto" />
           <AssociationSet Name="FK_ImgProducto_Producto" Association="NovaMerModel.FK_ImgProducto_Producto">
@@ -277,6 +328,25 @@
           <AssociationSet Name="FK_Direcciones_Usuarios" Association="NovaMerModel.FK_Direcciones_Usuarios">
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Direccione" EntitySet="Direcciones" />
+          </AssociationSet>
+          <EntitySet Name="MetodosPagoes" EntityType="NovaMerModel.MetodosPago" />
+          <EntitySet Name="MetodosPagoUsuarios" EntityType="NovaMerModel.MetodosPagoUsuario" />
+          <AssociationSet Name="FK_MetodoPagoUsuario_Metodo" Association="NovaMerModel.FK_MetodoPagoUsuario_Metodo">
+            <End Role="MetodosPago" EntitySet="MetodosPagoes" />
+            <End Role="MetodosPagoUsuario" EntitySet="MetodosPagoUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetodoPagoUsuario_Usuario" Association="NovaMerModel.FK_MetodoPagoUsuario_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="MetodosPagoUsuario" EntitySet="MetodosPagoUsuarios" />
+          </AssociationSet>
+          <EntitySet Name="Vendedors" EntityType="NovaMerModel.Vendedor" />
+          <AssociationSet Name="FK_Producto_Vendedor" Association="NovaMerModel.FK_Producto_Vendedor">
+            <End Role="Vendedor" EntitySet="Vendedors" />
+            <End Role="Producto" EntitySet="Productoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vendedor_Usuario" Association="NovaMerModel.FK_Vendedor_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Vendedor" EntitySet="Vendedors" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Categoria">
@@ -306,24 +376,9 @@
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Categoria" Relationship="NovaMerModel.FK_Producto_Categoria" FromRole="Producto" ToRole="Categoria" />
-          <NavigationProperty Name="Vendedor" Relationship="NovaMerModel.FK_Producto_Vendedor" FromRole="Producto" ToRole="Vendedor" />
           <Property Name="Imagen" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="ImgProductoes" Relationship="NovaMerModel.FK_ImgProducto_Producto" FromRole="Producto" ToRole="ImgProducto" />
-        </EntityType>
-        <EntityType Name="Vendedor">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Guid" Nullable="false" />
-          <Property Name="UsuarioID" Type="Guid" Nullable="false" />
-          <Property Name="RFC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
-          <Property Name="IMGCuentaBanco" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="INE" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="ImgComprobanteDomicilio" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="Productoes" Relationship="NovaMerModel.FK_Producto_Vendedor" FromRole="Vendedor" ToRole="Producto" />
-          <NavigationProperty Name="Usuario" Relationship="NovaMerModel.FK_Vendedor_Usuario" FromRole="Vendedor" ToRole="Usuario" />
-          <Property Name="FechaRegistro" Type="DateTime" Precision="0" />
-          <Property Name="Activo" Type="Boolean" />
+          <NavigationProperty Name="Vendedor" Relationship="NovaMerModel.FK_Producto_Vendedor" FromRole="Producto" ToRole="Vendedor" />
         </EntityType>
         <Association Name="FK_Producto_Categoria">
           <End Type="NovaMerModel.Categoria" Role="Categoria" Multiplicity="1" />
@@ -334,30 +389,6 @@
             </Principal>
             <Dependent Role="Producto">
               <PropertyRef Name="CategoriaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Producto_Vendedor">
-          <End Type="NovaMerModel.Vendedor" Role="Vendedor" Multiplicity="1" />
-          <End Type="NovaMerModel.Producto" Role="Producto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Vendedor">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Producto">
-              <PropertyRef Name="VendedorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Vendedor_Usuario">
-          <End Type="NovaMerModel.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="NovaMerModel.Vendedor" Role="Vendedor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Vendedor">
-              <PropertyRef Name="UsuarioID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -411,6 +442,97 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Direccione">
+              <PropertyRef Name="UsuarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MetodosPago">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MetodosPagoUsuarios" Relationship="NovaMerModel.FK_MetodoPagoUsuario_Metodo" FromRole="MetodosPago" ToRole="MetodosPagoUsuario" />
+        </EntityType>
+        <EntityType Name="MetodosPagoUsuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsuarioId" Type="Guid" Nullable="false" />
+          <Property Name="MetodoPagoId" Type="Int32" Nullable="false" />
+          <Property Name="NumeroTarjeta" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="FechaVencimiento" Type="DateTime" Precision="0" />
+          <Property Name="NombreTitular" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CuentaPaypal" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CuentaMercadoPago" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MetodosPago" Relationship="NovaMerModel.FK_MetodoPagoUsuario_Metodo" FromRole="MetodosPagoUsuario" ToRole="MetodosPago" />
+          <NavigationProperty Name="Usuario" Relationship="NovaMerModel.FK_MetodoPagoUsuario_Usuario" FromRole="MetodosPagoUsuario" ToRole="Usuario" />
+          <Property Name="EsPredeterminado" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_MetodoPagoUsuario_Metodo">
+          <End Type="NovaMerModel.MetodosPago" Role="MetodosPago" Multiplicity="1" />
+          <End Type="NovaMerModel.MetodosPagoUsuario" Role="MetodosPagoUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodosPago">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MetodosPagoUsuario">
+              <PropertyRef Name="MetodoPagoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetodoPagoUsuario_Usuario">
+          <End Type="NovaMerModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="NovaMerModel.MetodosPagoUsuario" Role="MetodosPagoUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MetodosPagoUsuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Vendedor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="UsuarioID" Type="Guid" Nullable="false" />
+          <Property Name="RFC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="IMGCuentaBanco" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="INE" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ImgComprobanteDomicilio" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Precision="0" />
+          <Property Name="Activo" Type="Boolean" />
+          <Property Name="Curp" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="CuentaBancaria" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Productoes" Relationship="NovaMerModel.FK_Producto_Vendedor" FromRole="Vendedor" ToRole="Producto" />
+          <NavigationProperty Name="Usuario" Relationship="NovaMerModel.FK_Vendedor_Usuario" FromRole="Vendedor" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_Producto_Vendedor">
+          <End Type="NovaMerModel.Vendedor" Role="Vendedor" Multiplicity="1" />
+          <End Type="NovaMerModel.Producto" Role="Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendedor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="VendedorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vendedor_Usuario">
+          <End Type="NovaMerModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="NovaMerModel.Vendedor" Role="Vendedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Vendedor">
               <PropertyRef Name="UsuarioID" />
             </Dependent>
           </ReferentialConstraint>
@@ -476,20 +598,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Vendedors">
-            <EntityTypeMapping TypeName="NovaMerModel.Vendedor">
-              <MappingFragment StoreEntitySet="Vendedor">
-                <ScalarProperty Name="Activo" ColumnName="Activo" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="ImgComprobanteDomicilio" ColumnName="ImgComprobanteDomicilio" />
-                <ScalarProperty Name="INE" ColumnName="INE" />
-                <ScalarProperty Name="IMGCuentaBanco" ColumnName="IMGCuentaBanco" />
-                <ScalarProperty Name="RFC" ColumnName="RFC" />
-                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ImgProductoes">
             <EntityTypeMapping TypeName="NovaMerModel.ImgProducto">
               <MappingFragment StoreEntitySet="ImgProducto">
@@ -515,6 +623,47 @@
                 <ScalarProperty Name="Localidad" ColumnName="Localidad" />
                 <ScalarProperty Name="Numero" ColumnName="Numero" />
                 <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MetodosPagoes">
+            <EntityTypeMapping TypeName="NovaMerModel.MetodosPago">
+              <MappingFragment StoreEntitySet="MetodosPago">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MetodosPagoUsuarios">
+            <EntityTypeMapping TypeName="NovaMerModel.MetodosPagoUsuario">
+              <MappingFragment StoreEntitySet="MetodosPagoUsuario">
+                <ScalarProperty Name="EsPredeterminado" ColumnName="EsPredeterminado" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="CuentaMercadoPago" ColumnName="CuentaMercadoPago" />
+                <ScalarProperty Name="CuentaPaypal" ColumnName="CuentaPaypal" />
+                <ScalarProperty Name="NombreTitular" ColumnName="NombreTitular" />
+                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
+                <ScalarProperty Name="NumeroTarjeta" ColumnName="NumeroTarjeta" />
+                <ScalarProperty Name="MetodoPagoId" ColumnName="MetodoPagoId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendedors">
+            <EntityTypeMapping TypeName="NovaMerModel.Vendedor">
+              <MappingFragment StoreEntitySet="Vendedor">
+                <ScalarProperty Name="CuentaBancaria" ColumnName="CuentaBancaria" />
+                <ScalarProperty Name="Curp" ColumnName="Curp" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ImgComprobanteDomicilio" ColumnName="ImgComprobanteDomicilio" />
+                <ScalarProperty Name="INE" ColumnName="INE" />
+                <ScalarProperty Name="IMGCuentaBanco" ColumnName="IMGCuentaBanco" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
                 <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

@@ -4,9 +4,27 @@ $(document).ready(function () {
         window.location.href = "/Home/Inicio";
     });
 
+    $("#metodoPago").on("change", function () {
+        var metodoSeleccionado = $(this).val();
+        //debugger;
+        // Ocultar todas las secciones
+        $(".campos-metodo").addClass("d-none");
+
+        if (metodoSeleccionado) {
+            // Mostrar solo las que apliquen (ejemplo: 1 y 2 = tarjetas)
+            $(".campos-metodo").each(function () {
+                var metodos = $(this).data("metodo").toString().split(",");
+                if (metodos.includes(metodoSeleccionado)) {
+                    $(this).removeClass("d-none");
+                }
+            });
+        }
+    });
     
     traeInfoPersonal(UsuarioId);
     traeDireccionUsuario(UsuarioId);
+    cargarMetodoPredeterminado();
+
 });
 
 function traeInfoPersonal(uid) {
@@ -276,4 +294,242 @@ $('#guardarDireccionPredeterminada').on('click', function () {
             });
         }
     });
+});
+
+$("#formAgregarMetodo").on("submit", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: '/Cuenta/AgregarMetodoPago',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function (response) {
+            if (response.success) {
+                alert("✅ Método de pago guardado correctamente.");
+                $("#modalAgregarMetodo").modal('hide');
+                $("#formAgregarMetodo")[0].reset();
+            } else {
+                alert("⚠️ " + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+            alert("❌ Ocurrió un error al guardar el método de pago.");
+        }
+    });
+});
+
+    $("#btnMisMetodos").on("click", function () {
+        // Abrir el modal
+        var modal = new bootstrap.Modal(document.getElementById('modalMisMetodos'));
+        modal.show();
+
+        // Vaciar lista
+        $("#listaMetodosPago").empty();
+
+        // AJAX para traer métodos de pago del usuario
+        $.ajax({
+            url: '/Cuenta/ObtenerMetodosPago', // Acción en tu controlador
+            type: 'GET',
+            success: function (response) {
+                if (response.length > 0) {
+                    response.forEach(function (metodo) {
+                        var item = `
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${metodo.descripcion} 
+                                <button class="btn btn-sm btn-primary btn-predeterminado" data-id="${metodo.id}">
+                                    ${metodo.esPredeterminado ? 'Predeterminado' : 'Elegir'}
+                                </button>
+                            </li>
+                        `;
+                        $("#listaMetodosPago").append(item);
+                    });
+                } else {
+                    $("#listaMetodosPago").append('<li class="list-group-item">No tienes métodos de pago</li>');
+                }
+            },
+            error: function () {
+                alert("Error al cargar los métodos de pago");
+            }
+        });
+    });
+
+    // Seleccionar método predeterminado
+    $(document).on("click", ".btn-predeterminado", function () {
+        var metodoId = $(this).data("id");
+
+        $.ajax({
+            url: '/Cuenta/EstablecerPredeterminado',
+            type: 'POST',
+            data: { metodoId: metodoId },
+            success: function (response) {
+                if (response.success) {
+                    alert("✅ Método de pago establecido como predeterminado");
+
+                    // En lugar de cerrar y reabrir el modal, solo recargamos la lista
+                    $.ajax({
+                        url: '/Cuenta/ObtenerMetodosPago',
+                        type: 'GET',
+                        success: function (response) {
+                            $("#listaMetodosPago").empty();
+                            response.forEach(function (metodo) {
+                                var item = `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${metodo.descripcion} 
+                                    <button class="btn btn-sm btn-primary btn-predeterminado" data-id="${metodo.id}">
+                                        ${metodo.esPredeterminado ? 'Predeterminado' : 'Elegir'}
+                                    </button>
+                                </li>
+                            `;
+                                $("#listaMetodosPago").append(item);
+                            });
+                        }
+                    });
+
+                    // Actualizamos el input del método predeterminado también
+                    cargarMetodoPredeterminado();
+
+                } else {
+                    alert("⚠️ " + response.message);
+                }
+            },
+            error: function () {
+                alert("❌ Error al establecer método predeterminado");
+            }
+        });
+    });
+
+
+function cargarMetodoPredeterminado() {
+    $.ajax({
+        url: '/Cuenta/ObtenerMetodoPredeterminado',
+        type: 'GET',
+        success: function (response) {
+            if (response) {
+                var texto = "";
+
+                if (response.numeroTarjeta) {
+                    // Censurar todos los dígitos excepto los últimos 3
+                    var ultimos = response.numeroTarjeta.slice(-3);
+                    texto = "**** **** **** " + ultimos;
+                } else if (response.cuentaPaypal) {
+                    texto = "Paypal: " + response.cuentaPaypal;
+                } else if (response.cuentaMercadoPago) {
+                    texto = "Mercado Pago: " + response.cuentaMercadoPago;
+                } else {
+                    texto = "Otro método de pago";
+                }
+
+                $("#inputMetodoPredeterminado").val(texto);
+            } else {
+                $("#inputMetodoPredeterminado").val("Sin métodos de pago");
+            }
+        },
+        error: function () {
+            $("#inputMetodoPredeterminado").val("Error al cargar método de pago");
+        }
+    });
+}
+
+$(document).on("click", ".btn-predeterminado", function () {
+    setTimeout(cargarMetodoPredeterminado, 500);
+});
+
+$("#btnCambiarPassword").on("click", function () {
+    var actual = $("#passwordActual").val();
+    var nueva = $("#passwordNueva").val();
+
+    if (!actual || !nueva) {
+        alert("Debes llenar ambos campos");
+        return;
+    }
+
+    $.ajax({
+        url: '/Cuenta/CambiarPassword',
+        type: 'POST',
+        data: JSON.stringify({
+            PasswordActual: actual,
+            PasswordNueva: nueva
+        }),
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            if (response.success) {
+                alert("✅ Contraseña cambiada correctamente");
+                $("#passwordActual, #passwordNueva").val(""); // limpiar inputs
+            } else {
+                alert("⚠️ " + response.message);
+            }
+        },
+        error: function () {
+            alert("❌ Error al cambiar la contraseña");
+        }
+    });
+});
+
+
+// ----- //
+//document.getElementById('identificacion').addEventListener('change', function (event) {
+//    let reader = new FileReader();
+//    reader.onload = function (e) {
+//        let img = document.getElementById('previewIdentificacion');
+//        img.src = e.target.result;
+//        img.style.display = "block";
+//    }
+//    reader.readAsDataURL(event.target.files[0]);
+//});
+
+//// Previsualización Comprobante
+//document.getElementById('comprobante').addEventListener('change', function (event) {
+//    let reader = new FileReader();
+//    reader.onload = function (e) {
+//        let img = document.getElementById('previewComprobante');
+//        img.src = e.target.result;
+//        img.style.display = "block";
+//    }
+//    reader.readAsDataURL(event.target.files[0]);
+//});
+
+$('#quieroVenderBtn').on('click', function () {
+    $('#mdlRegistroVendedor').modal('show');
+});
+
+
+$("#btnRegistrarVendedor").on("click", function (e) {
+    e.preventDefault();
+
+    // Crear objeto FormData
+    var formData = new FormData();
+    formData.append("rfc", $("#rfc").val());
+    formData.append("curp", $("#curp").val());
+    formData.append("cuentaBancaria", $("#cuentaBancaria").val());
+    formData.append("identificacion", $("#identificacion")[0].files[0]);
+    formData.append("comprobanteDomicilio", $("#comprobanteDomicilio")[0].files[0]);
+    debugger;
+    $.ajax({
+        url: '/Cuenta/RegistrarVendedor',
+        type: 'POST',
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        success: function (response) {
+            if (response.success) {
+                debugger;
+                alert(response.response_msg);
+                // ejemplo: cerrar modal
+                $("#mdlRegistroVendedor").modal("hide");
+            } else {
+                alert("Error: " + response.response_msg);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+            alert("Error en la petición AJAX");
+        }
+    });
+});
+
+$("#rfc").on("input", function () {
+    if ($(this).val().length > 13) {
+        $(this).val($(this).val().substring(0, 13));
+    }
 });

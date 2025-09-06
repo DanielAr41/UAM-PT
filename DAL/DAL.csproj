@@ -75,6 +75,12 @@
     <Compile Include="ImgProducto.cs">
       <DependentUpon>NovaMerModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MetodosPago.cs">
+      <DependentUpon>NovaMerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MetodosPagoUsuario.cs">
+      <DependentUpon>NovaMerModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="NovaMerModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

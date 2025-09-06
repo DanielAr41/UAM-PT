@@ -29,8 +29,10 @@ namespace DAL
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Categoria> Categorias { get; set; }
         public virtual DbSet<Producto> Productoes { get; set; }
-        public virtual DbSet<Vendedor> Vendedors { get; set; }
         public virtual DbSet<ImgProducto> ImgProductoes { get; set; }
         public virtual DbSet<Direccione> Direcciones { get; set; }
+        public virtual DbSet<MetodosPago> MetodosPagoes { get; set; }
+        public virtual DbSet<MetodosPagoUsuario> MetodosPagoUsuarios { get; set; }
+        public virtual DbSet<Vendedor> Vendedors { get; set; }
     }
 }

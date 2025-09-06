@@ -13,6 +13,14 @@ namespace UAM_PT.Controllers
     {
         public IActionResult PerfilVendedor()
         {
+            var vendedorId = HttpContext.Session.GetString("VendedorId");
+
+            if (string.IsNullOrEmpty(vendedorId))
+            {
+                TempData["MensajeVendedor"] = "Debes registrarte como vendedor para acceder a la sección de 'Vender'";
+                return RedirectToAction("ConfiguracionCuenta", "Cuenta"); 
+            }
+
             return View();
         }
 
