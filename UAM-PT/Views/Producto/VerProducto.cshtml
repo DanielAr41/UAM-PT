@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewData["Title"] = "Ver Producto";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@model UAM_PT.Models.ProductoModel
+
+<style>
+    .product-container {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 50px;
+        flex-wrap: wrap;
+    }
+
+    .product-image img {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 8px;
+    }
+
+    .product-details {
+        max-width: 500px;
+    }
+
+        .product-details h2 {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+    .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .btn-add {
+        background-color: #ff8c00;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+        .btn-add:hover {
+            background-color: #e07b00;
+        }
+
+    .reviews {
+        margin-top: 20px;
+    }
+
+    .review-stars {
+        color: #ffcc00;
+    }
+
+    .related-products {
+        margin-top: 50px;
+    }
+
+        .related-products h3 {
+            margin-bottom: 20px;
+        }
+
+    .related-card img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .related-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+        .related-card h5 {
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .related-card p {
+            font-weight: bold;
+            color: #333;
+        }
+</style>
+
+<div class="product-container">
+    <div class="product-image">
+        <img src="/Home/ObtenerImagen?id=@Model.ID" alt="@Model.Nombre">
+    </div>
+    <div class="product-details">
+        <h2>@Model.Nombre</h2>
+        <p>@Model.Descripcion</p>
+        <p class="price">$@Model.Precio</p>
+        <button class="btn-add" data-pid="@Model.ID">Agregar al carrito</button>
+
+        <div class="reviews">
+            <p>Reseñas de los compradores</p>
+            <p class="review-stars">★★★★☆ (4.0 / 5)</p>
+            <p><em>"Me encantó, es muy cómodo y fue fácil de armar, además de que se ve muy bonito y elegante, combina con todo"</em> - Emily R.</p>
+        </div>
+    </div>
+</div>
+
+<div class="related-products container">
+    <h3>Productos relacionados</h3>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="related-card">
+                <img src="https://i.ibb.co/3s4mP1r/mesas.jpg" alt="Juego de mesas pequeñas">
+                <h5>Juego de mesas pequeñas</h5>
+                <p>$199.99</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="related-card">
+                <img src="https://i.ibb.co/BfJwXK2/lámpara.jpg" alt="Lámpara moderna">
+                <h5>Lámpara moderna</h5>
+                <p>$149.99</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="related-card">
+                <img src="https://i.ibb.co/JxQFJ7V/almohada.jpg" alt="Almohada decorativa">
+                <h5>Almohada decorativa</h5>
+                <p>$49.99</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/DetallesProducto.js"></script>

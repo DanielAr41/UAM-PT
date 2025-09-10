@@ -22,6 +22,11 @@
         <EntityTypeShape EntityType="NovaMerModel.Vendedor" Width="1.5" PointX="5.25" PointY="16.25" />
         <AssociationConnector Association="NovaMerModel.FK_Producto_Vendedor" />
         <AssociationConnector Association="NovaMerModel.FK_Vendedor_Usuario" />
+        <EntityTypeShape EntityType="NovaMerModel.Carrito" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="NovaMerModel.CarritoDetalle" Width="1.5" PointX="9.75" PointY="8.875" />
+        <AssociationConnector Association="NovaMerModel.FK_Carrito_Usuario" />
+        <AssociationConnector Association="NovaMerModel.FK_CarritoDetalle_Carrito" />
+        <AssociationConnector Association="NovaMerModel.FK_CarritoDetalle_Producto" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

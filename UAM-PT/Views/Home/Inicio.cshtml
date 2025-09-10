@@ -20,7 +20,8 @@
 </body>
 </html>
 
-<script src="~/js/inicio.js"></script>
+<script src="~/js/inicio.js?v=@Html.Raw(DateTime.Now.ToString("yyyyMMddHHmm"))"></script>
+
 
 <style>
     body {
@@ -77,6 +78,10 @@
             color: #007b5e;
             font-weight: bold;
         }
+
+    .producto-card {
+        cursor: pointer;
+    }
 
 </style>
 

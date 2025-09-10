@@ -12,32 +12,20 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Producto
+    public partial class Carrito
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Producto()
+        public Carrito()
         {
-            this.ImgProductoes = new HashSet<ImgProducto>();
             this.CarritoDetalles = new HashSet<CarritoDetalle>();
         }
     
-        public System.Guid ID { get; set; }
-        public System.Guid VendedorID { get; set; }
-        public System.Guid CategoriaID { get; set; }
-        public string SKU { get; set; }
-        public string Nombre { get; set; }
-        public decimal Precio { get; set; }
-        public decimal Peso { get; set; }
-        public string Descripcion { get; set; }
-        public int Stock { get; set; }
+        public System.Guid Id { get; set; }
+        public System.Guid UsuarioId { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
         public bool Activo { get; set; }
-        public System.DateTime FechaRegistro { get; set; }
-        public byte[] Imagen { get; set; }
     
-        public virtual Categoria Categoria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ImgProducto> ImgProductoes { get; set; }
-        public virtual Vendedor Vendedor { get; set; }
+        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CarritoDetalle> CarritoDetalles { get; set; }
     }

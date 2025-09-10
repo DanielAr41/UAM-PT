@@ -20,6 +20,7 @@ namespace DAL
             this.Direcciones = new HashSet<Direccione>();
             this.MetodosPagoUsuarios = new HashSet<MetodosPagoUsuario>();
             this.Vendedors = new HashSet<Vendedor>();
+            this.Carritoes = new HashSet<Carrito>();
         }
     
         public System.Guid ID { get; set; }
@@ -40,5 +41,7 @@ namespace DAL
         public virtual ICollection<MetodosPagoUsuario> MetodosPagoUsuarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vendedor> Vendedors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Carrito> Carritoes { get; set; }
     }
 }

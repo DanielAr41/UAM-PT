@@ -65,6 +65,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Carrito.cs">
+      <DependentUpon>NovaMerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarritoDetalle.cs">
+      <DependentUpon>NovaMerModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Categoria.cs">
       <DependentUpon>NovaMerModel.tt</DependentUpon>
     </Compile>

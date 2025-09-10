@@ -4,56 +4,46 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
+@model UAM_PT.Models.CarritoModel
+
 <main class="contenedor">
     <h2 class="titulo">Tu carrito de compras</h2>
 
     <div class="contenido">
         <!-- Lista de productos -->
-        <div class="productos">
-            <!-- Producto 1 -->
-            <div class="producto">
-                <img src="https://static.wixstatic.com/media/c837a6_56ac262818694d7db303f47390f2674a~mv2.jpg" alt="Huawei Watch">
-                <div class="info">
-                    <h3>Huawei Watch</h3>
-                    <p>Precio: $3,500.00</p>
-                </div>
-                <div class="precio">
-                    <span class="cantidad">1</span>
-                    <span class="monto">$3,500.00</span>
-                </div>
+        <div class="productos-container">
+            <div class="productos">
+                @foreach (var item in Model.Productos)
+                {
+                    <div class="producto">
+                        <img src="@Url.Action("ObtenerImagen", "Home", new { id = item.ProductoId })" alt="@item.Nombre" />
+                        <div class="info">
+                            <h3>@item.Nombre</h3>
+                            <p>Precio: @item.PrecioUnitario.ToString("C")</p>
+                        </div>
+                        <div class="precio">
+                            <span class="cantidad">@item.Cantidad</span>
+                            <span class="monto">@((item.Cantidad * item.PrecioUnitario).ToString("C"))</span>
+                        </div>
+                        <button class="btn-quitar" data-id="@item.ProductoId" title="Quitar del carrito">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </div>
+                }
             </div>
 
-            <!-- Producto 2 -->
-            <div class="producto">
-                <img src="https://i.pinimg.com/originals/d8/3b/7f/d83b7f1077d4c96ae4ae60b71fc1426e.jpg" alt="Bluetooth JBL">
-                <div class="info">
-                    <h3>Bluetooth JBL</h3>
-                    <p>Precio: $750</p>
-                </div>
-                <div class="precio">
-                    <span class="cantidad">2</span>
-                    <span class="monto">$750.00</span>
-                </div>
-            </div>
-
-            <a href="#" class="continuar">Continuar comprando</a>
+            <a href="/Home/Inicio" class="continuar">Continuar comprando</a>
         </div>
-
         <!-- Resumen de la orden -->
         <div class="resumen">
             <h3>Resumen de la orden</h3>
             <div class="fila">
                 <span>Subtotal</span>
-                <span>$300</span>
+                <span>@Model.Total.ToString("C")</span>
             </div>
-            <div class="fila">
-                <span>Código Promocional</span>
-                <input type="text" class="codigo">
-            </div>
-            <button class="btn-aplicar">Aplicar</button>
             <div class="fila total">
                 <span>Total</span>
-                <span>$300</span>
+                <span>@Model.Total.ToString("C")</span>
             </div>
             <button class="btn-pago">Proceder al pago</button>
         </div>
@@ -259,4 +249,63 @@
                 text-decoration: underline;
             }
 
+
+    .productos {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-height: 500px; /* altura del scroll */
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+        /* Opcional: estilo para la barra de scroll */
+        .productos::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .productos::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .productos::-webkit-scrollbar-track {
+            background-color: rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+
+    .continuar {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #555;
+        text-decoration: underline;
+    }
+
+    .btn-quitar {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-quitar i {
+            color: black; /* rojo para que contraste */
+            font-size: 1rem; /* tamaño grande */
+            transition: color 0.2s;
+        }
+
+        .btn-quitar:hover i {
+            color: #cc0000; /* rojo más oscuro al pasar el mouse */
+        }
+
+
+
                 </style>
+
+
+<script src="~/js/CarritoDeCompras.js"></script>

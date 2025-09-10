@@ -5,6 +5,25 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="NovaMerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Carrito">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UsuarioId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarritoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CarritoId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductoId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="ID" />
@@ -122,6 +141,42 @@
           <Property Name="Curp" Type="nvarchar" MaxLength="18" />
           <Property Name="CuentaBancaria" Type="nvarchar" MaxLength="20" />
         </EntityType>
+        <Association Name="FK_Carrito_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Carrito" Type="Self.Carrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Carrito">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarritoDetalle_Carrito">
+          <End Role="Carrito" Type="Self.Carrito" Multiplicity="1" />
+          <End Role="CarritoDetalle" Type="Self.CarritoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carrito">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarritoDetalle">
+              <PropertyRef Name="CarritoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarritoDetalle_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="CarritoDetalle" Type="Self.CarritoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CarritoDetalle">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Direcciones_Usuarios">
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
           <End Role="Direcciones" Type="Self.Direcciones" Multiplicity="*" />
@@ -219,6 +274,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="NovaMerModelStoreContainer">
+          <EntitySet Name="Carrito" EntityType="Self.Carrito" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarritoDetalle" EntityType="Self.CarritoDetalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Direcciones" EntityType="Self.Direcciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImgProducto" EntityType="Self.ImgProducto" Schema="dbo" store:Type="Tables" />
@@ -228,6 +285,18 @@
           <EntitySet Name="RolUsuario" EntityType="Self.RolUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendedor" EntityType="Self.Vendedor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Carrito_Usuario" Association="Self.FK_Carrito_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Carrito" EntitySet="Carrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarritoDetalle_Carrito" Association="Self.FK_CarritoDetalle_Carrito">
+            <End Role="Carrito" EntitySet="Carrito" />
+            <End Role="CarritoDetalle" EntitySet="CarritoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarritoDetalle_Producto" Association="Self.FK_CarritoDetalle_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="CarritoDetalle" EntitySet="CarritoDetalle" />
+          </AssociationSet>
           <AssociationSet Name="FK_Direcciones_Usuarios" Association="Self.FK_Direcciones_Usuarios">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Direcciones" EntitySet="Direcciones" />
@@ -293,6 +362,7 @@
           <NavigationProperty Name="Direcciones" Relationship="NovaMerModel.FK_Direcciones_Usuarios" FromRole="Usuario" ToRole="Direccione" />
           <NavigationProperty Name="MetodosPagoUsuarios" Relationship="NovaMerModel.FK_MetodoPagoUsuario_Usuario" FromRole="Usuario" ToRole="MetodosPagoUsuario" />
           <NavigationProperty Name="Vendedors" Relationship="NovaMerModel.FK_Vendedor_Usuario" FromRole="Usuario" ToRole="Vendedor" />
+          <NavigationProperty Name="Carritoes" Relationship="NovaMerModel.FK_Carrito_Usuario" FromRole="Usuario" ToRole="Carrito" />
         </EntityType>
         <Association Name="FK_Usuarios_RolUsuario">
           <End Role="RolUsuario" Type="Self.RolUsuario" Multiplicity="1" />
@@ -348,6 +418,20 @@
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Vendedor" EntitySet="Vendedors" />
           </AssociationSet>
+          <EntitySet Name="Carritoes" EntityType="NovaMerModel.Carrito" />
+          <EntitySet Name="CarritoDetalles" EntityType="NovaMerModel.CarritoDetalle" />
+          <AssociationSet Name="FK_Carrito_Usuario" Association="NovaMerModel.FK_Carrito_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Carrito" EntitySet="Carritoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarritoDetalle_Carrito" Association="NovaMerModel.FK_CarritoDetalle_Carrito">
+            <End Role="Carrito" EntitySet="Carritoes" />
+            <End Role="CarritoDetalle" EntitySet="CarritoDetalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarritoDetalle_Producto" Association="NovaMerModel.FK_CarritoDetalle_Producto">
+            <End Role="Producto" EntitySet="Productoes" />
+            <End Role="CarritoDetalle" EntitySet="CarritoDetalles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Categoria">
           <Key>
@@ -379,6 +463,7 @@
           <Property Name="Imagen" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="ImgProductoes" Relationship="NovaMerModel.FK_ImgProducto_Producto" FromRole="Producto" ToRole="ImgProducto" />
           <NavigationProperty Name="Vendedor" Relationship="NovaMerModel.FK_Producto_Vendedor" FromRole="Producto" ToRole="Vendedor" />
+          <NavigationProperty Name="CarritoDetalles" Relationship="NovaMerModel.FK_CarritoDetalle_Producto" FromRole="Producto" ToRole="CarritoDetalle" />
         </EntityType>
         <Association Name="FK_Producto_Categoria">
           <End Type="NovaMerModel.Categoria" Role="Categoria" Multiplicity="1" />
@@ -537,6 +622,65 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Carrito">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="UsuarioId" Type="Guid" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="NovaMerModel.FK_Carrito_Usuario" FromRole="Carrito" ToRole="Usuario" />
+          <NavigationProperty Name="CarritoDetalles" Relationship="NovaMerModel.FK_CarritoDetalle_Carrito" FromRole="Carrito" ToRole="CarritoDetalle" />
+        </EntityType>
+        <EntityType Name="CarritoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CarritoId" Type="Guid" Nullable="false" />
+          <Property Name="ProductoId" Type="Guid" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="Carrito" Relationship="NovaMerModel.FK_CarritoDetalle_Carrito" FromRole="CarritoDetalle" ToRole="Carrito" />
+          <NavigationProperty Name="Producto" Relationship="NovaMerModel.FK_CarritoDetalle_Producto" FromRole="CarritoDetalle" ToRole="Producto" />
+        </EntityType>
+        <Association Name="FK_Carrito_Usuario">
+          <End Type="NovaMerModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="NovaMerModel.Carrito" Role="Carrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Carrito">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarritoDetalle_Carrito">
+          <End Type="NovaMerModel.Carrito" Role="Carrito" Multiplicity="1" />
+          <End Type="NovaMerModel.CarritoDetalle" Role="CarritoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carrito">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarritoDetalle">
+              <PropertyRef Name="CarritoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarritoDetalle_Producto">
+          <End Type="NovaMerModel.Producto" Role="Producto" Multiplicity="1" />
+          <End Type="NovaMerModel.CarritoDetalle" Role="CarritoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CarritoDetalle">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -666,6 +810,27 @@
                 <ScalarProperty Name="RFC" ColumnName="RFC" />
                 <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carritoes">
+            <EntityTypeMapping TypeName="NovaMerModel.Carrito">
+              <MappingFragment StoreEntitySet="Carrito">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarritoDetalles">
+            <EntityTypeMapping TypeName="NovaMerModel.CarritoDetalle">
+              <MappingFragment StoreEntitySet="CarritoDetalle">
+                <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+                <ScalarProperty Name="CarritoId" ColumnName="CarritoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

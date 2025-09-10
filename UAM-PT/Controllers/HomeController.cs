@@ -64,14 +64,6 @@ namespace UAM_PT.Controllers
 
         public ActionResult ObtenerImagen(Guid id)
         {
-            //using (var db = new NovaMerEntities2())
-            //{
-            //    var producto = db.Productoes.FirstOrDefault(p => p.ID == id);
-            //    if (producto != null && producto.Imagen != null)
-            //    {
-            //        return File(producto.Imagen, "image/jpeg"); 
-            //    }
-            //}
             using (var db = new NovaMerEntities2())
             {
                 // Obtener la primera imagen activa del producto

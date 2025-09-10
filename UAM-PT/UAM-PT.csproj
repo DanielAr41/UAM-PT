@@ -15,7 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\DetallesProducto.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\DetallesProducto.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\DetallesProducto.js" />
   </ItemGroup>
 
   <ItemGroup>

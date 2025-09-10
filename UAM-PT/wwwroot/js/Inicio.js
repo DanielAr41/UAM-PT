@@ -51,3 +51,10 @@ $(document).on('click', '.carrito', function () {
 $(document).on('click', '#MisPedidos', function () {
     window.location.href = "/Pedidos/MisPedidos";
 });
+
+$(document).on("click", ".producto-card", function () {
+    var productId = $(this).data("pid");
+    window.location.href = '/Producto/VerProducto?id=' + productId;
+});
+
+
