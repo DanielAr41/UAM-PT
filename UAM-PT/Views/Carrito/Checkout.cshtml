@@ -4,6 +4,8 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
+@model CheckoutModel
+
 <body>
     <header class="header">
         <a href="#" class="volver">&larr; Regresar al carrito de compras</a>
@@ -17,19 +19,19 @@
             <div class="bloque">
                 <h3>Información de contacto</h3>
                 <div class="grupo-doble">
-                    <input type="text" placeholder="Nombre(s)">
-                    <input type="text" placeholder="Apellido">
+                    <input type="text" placeholder="Nombre(s)" id="Nombres" readonly>
+                    <input type="text" placeholder="Apellido" id="Apaterno" readonly>
                 </div>
                 <div class="grupo-doble">
-                    <input type="text" placeholder="(+55) 000 111 22">
-                    <input type="email" placeholder="Correo electrónico">
+                    <input type="text" placeholder="(+55) 000 111 22" id="Telefono" readonly>
+                    <input type="email" placeholder="Correo electrónico" id="Correo" readonly>
                 </div>
             </div>
 
             <div class="bloque">
                 <h3>Selecciona la dirección de entrega</h3>
-                <input type="text" value="📍 Calle Benito Juarez #82, Cuajimalpa, Ciudad de México" readonly>
-                <textarea placeholder="Instrucción especial de entrega para el repartidor">Entre calle X y calle Y hasta el fondo</textarea>
+                <input type="text" placeholder="Domicilio" id="Domicilio" readonly>
+                <textarea id="Referencias" readonly placeholder="Instrucción especial de entrega para el repartidor">Entre calle X y calle Y hasta el fondo</textarea>
             </div>
 
             <div class="bloque">
@@ -45,23 +47,22 @@
                 <label><input type="radio" name="pago"> Pago en Oxxo</label>
             </div>
 
-            <button class="btn-confirmar">Confirmar compra</button>
+            <button class="btn-confirmar" id="ConfirmarCompra">Confirmar compra</button>
         </section>
 
         <aside class="resumen">
             <div class="productos">
                 <h3>Productos <span class="editar">✎</span></h3>
-                <p class="cantidad">5 productos</p>
+                <p class="cantidad">@Model.Productos.Count producto(s)</p>
                 <div class="miniaturas">
-                    <img src="https://via.placeholder.com/30" alt="">
-                    <img src="https://via.placeholder.com/30" alt="">
-                    <img src="https://via.placeholder.com/30" alt="">
-                    <img src="https://via.placeholder.com/30" alt="">
-                    <img src="https://via.placeholder.com/30" alt="">
+                    @foreach (var p in Model.Productos.Take(5))
+                    {
+                        <img src="@Url.Action("ObtenerImagen", "Home", new { id = p.ProductoId })" alt="@p.Nombre" />
+                    }
                 </div>
                 <div class="precio-total">
                     <span>Total</span>
-                    <strong>$1,980.00</strong>
+                    <strong>@Model.Subtotal.ToString("C")</strong>
                 </div>
             </div>
 
@@ -69,21 +70,23 @@
                 <h3>Resumen del pedido</h3>
                 <div class="linea">
                     <span>Productos en el carrito</span>
-                    <span>$1,990.00</span>
+                    <span>@Model.Subtotal.ToString("C")</span>
                 </div>
                 <div class="linea">
                     <span>Envío</span>
-                    <span>$50.00</span>
+                    <span>@Model.Envio.ToString("C")</span>
                 </div>
                 <hr>
                 <div class="linea total">
                     <span>Total a pagar</span>
-                    <strong>$2,040.00</strong>
+                    <strong>@Model.Total.ToString("C")</strong>
                 </div>
             </div>
         </aside>
     </main>
 </body>
+
+<script src="~/js/Checkout.js"></script>
 
 <style>
     * {

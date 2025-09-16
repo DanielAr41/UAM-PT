@@ -1,6 +1,7 @@
 ﻿using DAL;
 using Microsoft.AspNetCore.Mvc;
 using UAM_PT.Models;
+using System.Data.Entity;
 
 namespace UAM_PT.Controllers
 {
@@ -42,7 +43,33 @@ namespace UAM_PT.Controllers
 
         public IActionResult Checkout()
         {
-            return View();
+            var userIdString = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString))
+                return RedirectToAction("Login", "Cuenta");
+
+            Guid usuarioId = Guid.Parse(userIdString);
+
+            var carrito = _context.Carritoes
+                .Include("CarritoDetalles.Producto")
+                .FirstOrDefault(c => c.UsuarioId == usuarioId && c.Activo);
+
+
+
+            if (carrito == null || !carrito.CarritoDetalles.Any())
+                return RedirectToAction("CarritoDeCompras");
+
+            var model = new CheckoutModel
+            {
+                Productos = carrito.CarritoDetalles.Select(cd => new CarritoProductoModel
+                {
+                    ProductoId = cd.ProductoId,
+                    Nombre = cd.Producto.Nombre,
+                    Cantidad = cd.Cantidad,
+                    PrecioUnitario = cd.Producto.Precio
+                }).ToList()
+            };
+
+            return View(model);
         }
 
         public IActionResult Agregar(Guid productoId, int cantidad = 1)
@@ -133,8 +160,67 @@ namespace UAM_PT.Controllers
             return Json(new { success = false, message = "Producto no encontrado en el carrito" });
         }
 
+        [HttpPost]
+        public IActionResult FinalizarCompra(Guid direccionId)
+        {
+            try
+            {
+                var usuarioId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+
+                // 1. Traer carrito activo
+                var carrito = _context.Carritoes
+                    .Include(c => c.CarritoDetalles.Select(cd => cd.Producto))
+                    .FirstOrDefault(c => c.UsuarioId == usuarioId && c.Activo);
 
 
+
+                if (carrito == null || !carrito.CarritoDetalles.Any())
+                {
+                    return Json(new { success = false, message = "El carrito está vacío." });
+                }
+
+                // 2. Crear pedido
+                var pedido = new Pedido
+                {
+                    Id = Guid.NewGuid(),
+                    UsuarioId = usuarioId,
+                    DireccionId = direccionId,
+                    FechaPedido = DateTime.Now,
+                    Total = carrito.CarritoDetalles.Sum(cd => cd.Cantidad * cd.PrecioUnitario),
+                    Estatus = "Pendiente",
+                    Activo = true
+                };
+
+                _context.Pedidos.Add(pedido);
+
+                // 3. Crear detalles del pedido
+                foreach (var item in carrito.CarritoDetalles)
+                {
+                    var detalle = new DetallesPedido
+                    {
+                        Id = Guid.NewGuid(),
+                        PedidoId = pedido.Id,
+                        ProductoId = item.ProductoId,
+                        Cantidad = item.Cantidad,
+                        Precio = item.PrecioUnitario,
+                        Estatus = "Pendiente"
+                    };
+
+                    _context.DetallesPedidoes.Add(detalle);
+                }
+
+                // 4. Marcar carrito como inactivo
+                carrito.Activo = false;
+
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
 
     }

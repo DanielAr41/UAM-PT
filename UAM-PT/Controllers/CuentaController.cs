@@ -95,7 +95,8 @@ namespace UAM_PT.Controllers
                         x.CodigoPostal,
                         x.Pais,
                         x.NumeroInt,
-                        x.FechaRegistro
+                        x.FechaRegistro,
+                        x.Referencias
                     })
                     .FirstOrDefault();
 

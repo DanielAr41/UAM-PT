@@ -14,6 +14,12 @@ namespace DAL
     
     public partial class Direccione
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Direccione()
+        {
+            this.Pedidos = new HashSet<Pedido>();
+        }
+    
         public System.Guid ID { get; set; }
         public System.Guid UsuarioID { get; set; }
         public string Calle { get; set; }
@@ -27,7 +33,10 @@ namespace DAL
         public Nullable<System.DateTime> FechaRegistro { get; set; }
         public Nullable<bool> Activo { get; set; }
         public bool Predeterminada { get; set; }
+        public string Referencias { get; set; }
     
         public virtual Usuario Usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Pedido> Pedidos { get; set; }
     }
 }

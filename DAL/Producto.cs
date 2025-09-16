@@ -19,6 +19,7 @@ namespace DAL
         {
             this.ImgProductoes = new HashSet<ImgProducto>();
             this.CarritoDetalles = new HashSet<CarritoDetalle>();
+            this.DetallesPedidoes = new HashSet<DetallesPedido>();
         }
     
         public System.Guid ID { get; set; }
@@ -40,5 +41,7 @@ namespace DAL
         public virtual Vendedor Vendedor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CarritoDetalle> CarritoDetalles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetallesPedido> DetallesPedidoes { get; set; }
     }
 }

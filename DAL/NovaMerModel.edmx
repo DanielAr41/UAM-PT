@@ -34,6 +34,19 @@
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DetallesPedido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PedidoId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductoId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="FechaEnvio" Type="datetime" />
+          <Property Name="Estatus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Direcciones">
           <Key>
             <PropertyRef Name="ID" />
@@ -51,6 +64,7 @@
           <Property Name="FechaRegistro" Type="date" />
           <Property Name="Activo" Type="bit" />
           <Property Name="Predeterminada" Type="bit" Nullable="false" />
+          <Property Name="Referencias" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ImgProducto">
           <Key>
@@ -84,6 +98,18 @@
           <Property Name="CuentaMercadoPago" Type="nvarchar" MaxLength="150" />
           <Property Name="Activo" Type="bit" Nullable="false" />
           <Property Name="EsPredeterminado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pedidos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UsuarioId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DireccionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FechaPedido" Type="datetime" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Estatus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Producto">
           <Key>
@@ -177,6 +203,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DetallesPedido_Pedidos">
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="1" />
+          <End Role="DetallesPedido" Type="Self.DetallesPedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pedidos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetallesPedido">
+              <PropertyRef Name="PedidoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallesPedido_Productos">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="DetallesPedido" Type="Self.DetallesPedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DetallesPedido">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Direcciones_Usuarios">
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
           <End Role="Direcciones" Type="Self.Direcciones" Multiplicity="*" />
@@ -221,6 +271,30 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="MetodosPagoUsuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Direcciones">
+          <End Role="Direcciones" Type="Self.Direcciones" Multiplicity="1" />
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Direcciones">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="DireccionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pedidos">
               <PropertyRef Name="UsuarioId" />
             </Dependent>
           </ReferentialConstraint>
@@ -277,10 +351,12 @@
           <EntitySet Name="Carrito" EntityType="Self.Carrito" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CarritoDetalle" EntityType="Self.CarritoDetalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetallesPedido" EntityType="Self.DetallesPedido" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Direcciones" EntityType="Self.Direcciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImgProducto" EntityType="Self.ImgProducto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MetodosPago" EntityType="Self.MetodosPago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MetodosPagoUsuario" EntityType="Self.MetodosPagoUsuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pedidos" EntityType="Self.Pedidos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RolUsuario" EntityType="Self.RolUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -297,6 +373,14 @@
             <End Role="Producto" EntitySet="Producto" />
             <End Role="CarritoDetalle" EntitySet="CarritoDetalle" />
           </AssociationSet>
+          <AssociationSet Name="FK_DetallesPedido_Pedidos" Association="Self.FK_DetallesPedido_Pedidos">
+            <End Role="Pedidos" EntitySet="Pedidos" />
+            <End Role="DetallesPedido" EntitySet="DetallesPedido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallesPedido_Productos" Association="Self.FK_DetallesPedido_Productos">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="DetallesPedido" EntitySet="DetallesPedido" />
+          </AssociationSet>
           <AssociationSet Name="FK_Direcciones_Usuarios" Association="Self.FK_Direcciones_Usuarios">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Direcciones" EntitySet="Direcciones" />
@@ -312,6 +396,14 @@
           <AssociationSet Name="FK_MetodoPagoUsuario_Usuario" Association="Self.FK_MetodoPagoUsuario_Usuario">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="MetodosPagoUsuario" EntitySet="MetodosPagoUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Direcciones" Association="Self.FK_Pedidos_Direcciones">
+            <End Role="Direcciones" EntitySet="Direcciones" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Usuarios" Association="Self.FK_Pedidos_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
           </AssociationSet>
           <AssociationSet Name="FK_Producto_Categoria" Association="Self.FK_Producto_Categoria">
             <End Role="Categoria" EntitySet="Categoria" />
@@ -363,6 +455,7 @@
           <NavigationProperty Name="MetodosPagoUsuarios" Relationship="NovaMerModel.FK_MetodoPagoUsuario_Usuario" FromRole="Usuario" ToRole="MetodosPagoUsuario" />
           <NavigationProperty Name="Vendedors" Relationship="NovaMerModel.FK_Vendedor_Usuario" FromRole="Usuario" ToRole="Vendedor" />
           <NavigationProperty Name="Carritoes" Relationship="NovaMerModel.FK_Carrito_Usuario" FromRole="Usuario" ToRole="Carrito" />
+          <NavigationProperty Name="Pedidos" Relationship="NovaMerModel.FK_Pedidos_Usuarios" FromRole="Usuario" ToRole="Pedido" />
         </EntityType>
         <Association Name="FK_Usuarios_RolUsuario">
           <End Role="RolUsuario" Type="Self.RolUsuario" Multiplicity="1" />
@@ -432,6 +525,24 @@
             <End Role="Producto" EntitySet="Productoes" />
             <End Role="CarritoDetalle" EntitySet="CarritoDetalles" />
           </AssociationSet>
+          <EntitySet Name="DetallesPedidoes" EntityType="NovaMerModel.DetallesPedido" />
+          <EntitySet Name="Pedidos" EntityType="NovaMerModel.Pedido" />
+          <AssociationSet Name="FK_DetallesPedido_Pedidos" Association="NovaMerModel.FK_DetallesPedido_Pedidos">
+            <End Role="Pedido" EntitySet="Pedidos" />
+            <End Role="DetallesPedido" EntitySet="DetallesPedidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallesPedido_Productos" Association="NovaMerModel.FK_DetallesPedido_Productos">
+            <End Role="Producto" EntitySet="Productoes" />
+            <End Role="DetallesPedido" EntitySet="DetallesPedidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Direcciones" Association="NovaMerModel.FK_Pedidos_Direcciones">
+            <End Role="Direccione" EntitySet="Direcciones" />
+            <End Role="Pedido" EntitySet="Pedidos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pedidos_Usuarios" Association="NovaMerModel.FK_Pedidos_Usuarios">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Pedido" EntitySet="Pedidos" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Categoria">
           <Key>
@@ -464,6 +575,7 @@
           <NavigationProperty Name="ImgProductoes" Relationship="NovaMerModel.FK_ImgProducto_Producto" FromRole="Producto" ToRole="ImgProducto" />
           <NavigationProperty Name="Vendedor" Relationship="NovaMerModel.FK_Producto_Vendedor" FromRole="Producto" ToRole="Vendedor" />
           <NavigationProperty Name="CarritoDetalles" Relationship="NovaMerModel.FK_CarritoDetalle_Producto" FromRole="Producto" ToRole="CarritoDetalle" />
+          <NavigationProperty Name="DetallesPedidoes" Relationship="NovaMerModel.FK_DetallesPedido_Productos" FromRole="Producto" ToRole="DetallesPedido" />
         </EntityType>
         <Association Name="FK_Producto_Categoria">
           <End Type="NovaMerModel.Categoria" Role="Categoria" Multiplicity="1" />
@@ -518,6 +630,8 @@
           <Property Name="Activo" Type="Boolean" />
           <NavigationProperty Name="Usuario" Relationship="NovaMerModel.FK_Direcciones_Usuarios" FromRole="Direccione" ToRole="Usuario" />
           <Property Name="Predeterminada" Type="Boolean" Nullable="false" />
+          <Property Name="Referencias" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Pedidos" Relationship="NovaMerModel.FK_Pedidos_Direcciones" FromRole="Direccione" ToRole="Pedido" />
         </EntityType>
         <Association Name="FK_Direcciones_Usuarios">
           <End Type="NovaMerModel.Usuario" Role="Usuario" Multiplicity="1" />
@@ -681,6 +795,84 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DetallesPedido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="PedidoId" Type="Guid" Nullable="false" />
+          <Property Name="ProductoId" Type="Guid" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Subtotal" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="FechaEnvio" Type="DateTime" Precision="3" />
+          <Property Name="Estatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Pedido" Relationship="NovaMerModel.FK_DetallesPedido_Pedidos" FromRole="DetallesPedido" ToRole="Pedido" />
+          <NavigationProperty Name="Producto" Relationship="NovaMerModel.FK_DetallesPedido_Productos" FromRole="DetallesPedido" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Pedido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="UsuarioId" Type="Guid" Nullable="false" />
+          <Property Name="DireccionId" Type="Guid" Nullable="false" />
+          <Property Name="FechaPedido" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Estatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DetallesPedidoes" Relationship="NovaMerModel.FK_DetallesPedido_Pedidos" FromRole="Pedido" ToRole="DetallesPedido" />
+          <NavigationProperty Name="Direccione" Relationship="NovaMerModel.FK_Pedidos_Direcciones" FromRole="Pedido" ToRole="Direccione" />
+          <NavigationProperty Name="Usuario" Relationship="NovaMerModel.FK_Pedidos_Usuarios" FromRole="Pedido" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_DetallesPedido_Pedidos">
+          <End Type="NovaMerModel.Pedido" Role="Pedido" Multiplicity="1" />
+          <End Type="NovaMerModel.DetallesPedido" Role="DetallesPedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pedido">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetallesPedido">
+              <PropertyRef Name="PedidoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallesPedido_Productos">
+          <End Type="NovaMerModel.Producto" Role="Producto" Multiplicity="1" />
+          <End Type="NovaMerModel.DetallesPedido" Role="DetallesPedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DetallesPedido">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Direcciones">
+          <End Type="NovaMerModel.Direccione" Role="Direccione" Multiplicity="1" />
+          <End Type="NovaMerModel.Pedido" Role="Pedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Direccione">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pedido">
+              <PropertyRef Name="DireccionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pedidos_Usuarios">
+          <End Type="NovaMerModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="NovaMerModel.Pedido" Role="Pedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pedido">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -756,6 +948,7 @@
           <EntitySetMapping Name="Direcciones">
             <EntityTypeMapping TypeName="NovaMerModel.Direccione">
               <MappingFragment StoreEntitySet="Direcciones">
+                <ScalarProperty Name="Referencias" ColumnName="Referencias" />
                 <ScalarProperty Name="Predeterminada" ColumnName="Predeterminada" />
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
                 <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
@@ -830,6 +1023,33 @@
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
                 <ScalarProperty Name="CarritoId" ColumnName="CarritoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetallesPedidoes">
+            <EntityTypeMapping TypeName="NovaMerModel.DetallesPedido">
+              <MappingFragment StoreEntitySet="DetallesPedido">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="FechaEnvio" ColumnName="FechaEnvio" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+                <ScalarProperty Name="PedidoId" ColumnName="PedidoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pedidos">
+            <EntityTypeMapping TypeName="NovaMerModel.Pedido">
+              <MappingFragment StoreEntitySet="Pedidos">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="FechaPedido" ColumnName="FechaPedido" />
+                <ScalarProperty Name="DireccionId" ColumnName="DireccionId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -75,6 +75,9 @@
       <DependentUpon>NovaMerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="DetallesPedido.cs">
+      <DependentUpon>NovaMerModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Direccione.cs">
       <DependentUpon>NovaMerModel.tt</DependentUpon>
     </Compile>
@@ -101,6 +104,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NovaMerModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Pedido.cs">
+      <DependentUpon>NovaMerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Producto.cs">
       <DependentUpon>NovaMerModel.tt</DependentUpon>

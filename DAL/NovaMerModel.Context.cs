@@ -36,5 +36,7 @@ namespace DAL
         public virtual DbSet<Vendedor> Vendedors { get; set; }
         public virtual DbSet<Carrito> Carritoes { get; set; }
         public virtual DbSet<CarritoDetalle> CarritoDetalles { get; set; }
+        public virtual DbSet<DetallesPedido> DetallesPedidoes { get; set; }
+        public virtual DbSet<Pedido> Pedidos { get; set; }
     }
 }
