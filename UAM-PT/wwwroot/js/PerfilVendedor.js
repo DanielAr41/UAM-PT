@@ -32,7 +32,7 @@ function AgregaProducto() {
             contentType: false,
             processData: false, 
             success: function (response) {
-                debugger;
+                //debugger;
                 if (response.success) {
                     alert('Producto guardado correctamente.');
                     $('#mdlAddProducto').modal('hide');
@@ -54,7 +54,7 @@ function llenarCategorias() {
         url: '/Vender/TraeCategorias',
         type: 'GET',
         success: function (data) {
-            debugger;
+            //debugger;
             if (data != null) {
                 var select = $('#productoCategoria');
                 select.empty();

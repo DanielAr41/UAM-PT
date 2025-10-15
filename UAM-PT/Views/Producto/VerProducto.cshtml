@@ -87,6 +87,16 @@
             font-weight: bold;
             color: #333;
         }
+
+        .related-card img {
+            width: 100%; /* Ocupa todo el ancho del contenedor */
+            height: 200px; /* Altura fija */
+            object-fit: contain; /* Ajusta la imagen dentro sin recortarla */
+            background-color: #f8f8f8; /* Fondo de relleno (opcional, da uniformidad) */
+            border-radius: 8px; /* Bordes redondeados opcionales */
+            padding: 5px; /* Espacio interno para que no quede pegada */
+        }
+
 </style>
 
 <div class="product-container">
@@ -110,28 +120,24 @@
 <div class="related-products container">
     <h3>Productos relacionados</h3>
     <div class="row g-4">
-        <div class="col-md-4">
-            <div class="related-card">
-                <img src="https://i.ibb.co/3s4mP1r/mesas.jpg" alt="Juego de mesas pequeñas">
-                <h5>Juego de mesas pequeñas</h5>
-                <p>$199.99</p>
+        @foreach (var item in Model.Relacionados)
+        {
+            <div class="col-md-3">
+                <div class="related-card text-center">
+                    <a href="@Url.Action("VerProducto", "Producto", new { id = item.ID })" style="text-decoration:none; color:inherit;">
+                        <img src="/Home/ObtenerImagen?id=@item.ID" alt="@item.Nombre">
+                        <h5>@item.Nombre</h5>
+                        <p>$@item.Precio</p>
+                    </a>
+                </div>
+
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="related-card">
-                <img src="https://i.ibb.co/BfJwXK2/lámpara.jpg" alt="Lámpara moderna">
-                <h5>Lámpara moderna</h5>
-                <p>$149.99</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="related-card">
-                <img src="https://i.ibb.co/JxQFJ7V/almohada.jpg" alt="Almohada decorativa">
-                <h5>Almohada decorativa</h5>
-                <p>$49.99</p>
-            </div>
-        </div>
+        }
     </div>
+
+
 </div>
+
+
 
 <script src="~/js/DetallesProducto.js"></script>

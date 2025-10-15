@@ -18,13 +18,19 @@ namespace UAM_PT.Controllers
                 return NotFound();
             }
 
+            var relacionados = _context.Productoes
+                .Where(p => p.CategoriaID == producto.CategoriaID && p.ID != id)
+                .Take(24)
+                .ToList();
+
             var model = new ProductoModel
             {
                 ID = producto.ID,
                 Nombre = producto.Nombre,
                 Descripcion = producto.Descripcion,
                 Precio = producto.Precio,
-                Imagen = producto.Imagen // si tienes este campo
+                Imagen = producto.Imagen, // si tienes este campo
+                Relacionados = relacionados
             };
 
             return View(model);

@@ -1,11 +1,12 @@
 ﻿
 @{
-    ViewData["TitleHeader"] = "Configuración de la cuenta";
+    ViewData["TitleHeader"] = "Mis pedidos";
     Layout = "/Views/Shared/_Layout.cshtml";
 }
+
+@model List<UAM_PT.Models.PedidoModel>
+
 <style>
-
-
     h1 {
         color: #ff9800;
     }
@@ -71,40 +72,29 @@
     }
     /* Verde */
 </style>
-    <a href="#" class="back">Regresar</a>
+    <a href="/Home/Inicio" class="back">Regresar</a>
 
-    <h1>Mis pedidos</h1>
+   @*  <h1>Mis pedidos</h1> *@
 
+@foreach (var pedido in Model)
+{
     <div class="order-section">
-        <div class="order-date">28 de Abril de 2025</div>
+        <div class="order-date">@pedido.FechaPedido.ToString("dd 'de' MMMM 'de' yyyy")</div>
 
-        <div class="order-card">
-        <img src="\images\default.jpg" alt="Producto" class="order-image">
-            <div class="order-info">
-                <span class="order-status in-process">En proceso de entrega</span>
-                <span>1 Producto</span>
-            </div>
-        </div>
+        @foreach (var item in pedido.Productos)
+        {
+            <a href="@Url.Action("DetallesPedido", "Pedidos", new { pedidoId = pedido.PedidoId })" class="order-card">
+                <img src="@Url.Action("ObtenerImagen", "Home", new { id = item.ProductoId })" alt="@item.Nombre" class="order-image">
+                <div class="order-info">
+                    <span class="order-status @(pedido.Estatus == "Entregado" ? "delivered" : "in-process")">
+                        @pedido.Estatus
+                    </span>
+                    <span>@item.Cantidad @((item.Cantidad > 1) ? "productos" : "Producto")</span>
+                </div>
+            </a>
 
-        <div class="order-card">
-        <img src="\images\default.jpg" alt="Producto" class="order-image">
-            <div class="order-info">
-                <span class="order-status delivered">Entregado</span>
-                <span>2 productos</span>
-            </div>
-        </div>
+        }
     </div>
-
-    <div class="order-section">
-        <div class="order-date">14 de Marzo de 2025</div>
-
-        <div class="order-card">
-        <img src="\images\default.jpg" alt="Producto" class="order-image">
-            <div class="order-info">
-                <span class="order-status delivered">Entregado</span>
-                <span>1 Producto</span>
-            </div>
-        </div>
-    </div>
+}
 
 <script src="~/js/MisPedidos.js"></script>
