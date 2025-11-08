@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Simulación Google</title>
+</head>
+<body style="font-family:Arial;padding:20px">
+    <h3>Elegir cuenta</h3>
+
+    <div class="account" data-email="daniel4178_2@hotmail.com" data-name="Daniel Arenas" style="border:1px solid #ccc;padding:10px;margin:10px;cursor:pointer">
+        daniel4178_2@hotmail.com <br><small>Daniel Arenas</small>
+    </div>
+    <div class="account" data-email="ana@example.com" data-name="Ana López" style="border:1px solid #ccc;padding:10px;margin:10px;cursor:pointer">
+        ana@example.com <br><small>Ana López</small>
+    </div>
+
+    <script>
+        document.querySelectorAll('.account').forEach(el => {
+            el.onclick = () => {
+                const email = el.dataset.email;
+                const name = el.dataset.name;
+                const token = btoa(JSON.stringify({ email, name, iss: 'google-sim', iat: Date.now() }));
+
+                window.opener.postMessage({ type: 'google_sim', token }, "*");
+                window.close();
+            }
+        });
+    </script>
+</body>
+</html>

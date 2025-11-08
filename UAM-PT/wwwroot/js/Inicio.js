@@ -18,14 +18,15 @@ function traeProductos() {
 
             data.forEach(function (producto) {
                 const card = `
-                    <div class="producto-card" data-pid="${producto.id}">
+                    <div class="producto-card card-hover-novamer" data-pid="${producto.id}">
                         <img src="${producto.imagenUrl}" alt="${producto.nombre}">
-                        <h3>${producto.nombre}</h3>
-                        <p>$${producto.precio.toFixed(2)}</p>
+                        <h3 class="product-title">${producto.nombre}</h3>
+                        <p class="product-price">$${producto.precio.toFixed(2)}</p>
                     </div>
                 `;
                 container.append(card);
             });
+
         },
         error: function () {
             $("#productosContainer").html("<p>Error al cargar productos.</p>");

@@ -7,6 +7,9 @@ using DAL;
 using System.Linq;
 using UAM_PT.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Text.Json;
 
 namespace UAM_PT.Controllers
 {
@@ -131,6 +134,38 @@ namespace UAM_PT.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GoogleSimCallback([FromBody] JsonElement data)
+        {
+            var token = data.GetProperty("token").GetString();
+            var json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(token));
+
+            var payload = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+
+            string email = payload["email"].ToString();
+            string name = payload["name"].ToString();
+
+            var claims = new List<Claim> {
+                new Claim(ClaimTypes.Name, name),
+                new Claim(ClaimTypes.Email, email),
+                new Claim("provider", "google-sim")
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            return Json(new { ok = true });
+        }
+
+        
+        public IActionResult GoogleLogin()
+        {
+            return View();
         }
     }
 }

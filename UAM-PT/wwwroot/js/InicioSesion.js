@@ -117,7 +117,31 @@ $(document).on('click', '#registro', function (e) {
 //        $('#Ingresar span').removeClass('d-none');
 //        $('#Ingresar').text('Cargando...');
 //        setTimeout(function () {
-//            $('#loginForm').off('submit').submit(); 
+//            $('#loginForm').off('submit').submit();
 //        }, 2000);
 //    });
 //});
+
+
+document.getElementById("loginGoogle").addEventListener("click", function () {
+
+    const width = 520, height = 600;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
+
+    window.open('/Auth/GoogleLogin', 'googleSim', `width=${width},height=${height},top=${top},left=${left}`);
+
+    window.addEventListener("message", function (e) {
+        if (!e.data || e.data.type !== "google_sim") return;
+
+        const token = e.data.token;
+
+        fetch("/Auth/GoogleSimCallback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token })
+        })
+            .then(r => r.text())
+            .then(txt => { console.log(txt) })
+    });
+});

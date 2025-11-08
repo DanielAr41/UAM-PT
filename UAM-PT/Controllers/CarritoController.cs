@@ -111,7 +111,7 @@ namespace UAM_PT.Controllers
                     CarritoId = carrito.Id,
                     ProductoId = producto.ID,
                     Cantidad = cantidad,
-                    PrecioUnitario = producto.Precio // campo en tu tabla Producto
+                    PrecioUnitario = producto.Precio
                 };
 
                 _context.CarritoDetalles.Add(detalle);

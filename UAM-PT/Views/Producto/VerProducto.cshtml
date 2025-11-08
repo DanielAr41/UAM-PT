@@ -1,141 +1,172 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Ver Producto";
-    Layout = "/Views/Shared/_Layout.cshtml";
+    Layout = "/Views/Shared/_LayoutMain.cshtml"; /* aquí ya usas el layout principal marketplace */
 }
 
 @model UAM_PT.Models.ProductoModel
 
 <style>
-    .product-container {
-        display: flex;
-        gap: 40px;
-        margin-bottom: 50px;
-        flex-wrap: wrap;
+    .product-container{
+        display:flex;
+        gap:50px;
+        margin-bottom:70px;
+        margin-top:25px;
+        flex-wrap:wrap;
+        font-family:'Poppins', sans-serif;
     }
 
-    .product-image img {
-        width: 100%;
-        max-width: 500px;
-        border-radius: 8px;
+    .product-image img{
+        width:100%;
+        max-width:500px;
+        border-radius:16px;
+        object-fit:cover;
     }
 
-    .product-details {
-        max-width: 500px;
+    .product-details{
+        max-width:520px;
     }
 
-        .product-details h2 {
-            font-weight: bold;
-            margin-bottom: 10px;
+    .product-details h2{
+        font-weight:600;
+        font-size:28px;
+        margin-bottom:15px;
+        color:#222;
+    }
+
+    .product-details p{
+        font-size:15px;
+        color:#444;
+        margin-bottom:12px;
+    }
+
+    .product-price{
+        font-size:32px;
+        font-weight:700;
+        color:#FF8800;
+        margin:20px 0;
+    }
+
+    .btn-novamer-primary{
+        background:#FF8800;
+        color:#fff;
+        border:none;
+        border-radius:10px;
+        padding:12px 26px;
+        font-weight:600;
+        cursor:pointer;
+        font-size:15px;
+        transition:.2s;
+    }
+
+    .btn-novamer-primary:hover{
+        transform:translateY(-1px);
+        opacity:.92;
+    }
+
+    .reviews{
+        margin-top:25px;
+        font-size:14px;
+        color:#333;
+    }
+
+    .review-stars{
+        color:#FFD85C;
+        font-size:18px;
+    }
+
+    /* relacionados */
+    .related-products{
+        margin-top:90px;
+        font-family:'Poppins', sans-serif;
+    }
+
+    .related-card{
+        border-radius:14px;
+        border:1px solid #e8e8e8;
+        padding:14px;
+        transition:.2s;
+        cursor:pointer;
+        background:#fff;
+    }
+
+    .related-card:hover{
+        transform:scale(1.03);
+        box-shadow:0 3px 12px rgba(0,0,0,0.07);
+    }
+
+    .related-card img{
+        width:100%;
+        height:200px;
+        object-fit:contain;
+        background:#fafafa;
+        border-radius:10px;
+    }
+
+    .related-card h5{
+        margin-top:12px;
+        font-size:15px;
+        font-weight:500;
+        color:#222;
+    }
+
+    .related-card p{
+        font-size:17px;
+        font-weight:600;
+        color:#FF8800;
+        margin-bottom:0;
+    }
+
+    /* responsive */
+    @@media(max-width:768px){
+        .product-container{
+            flex-direction:column;
         }
-
-    .price {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #333;
     }
-
-    .btn-add {
-        background-color: #ff8c00;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin-top: 10px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-
-        .btn-add:hover {
-            background-color: #e07b00;
-        }
-
-    .reviews {
-        margin-top: 20px;
-    }
-
-    .review-stars {
-        color: #ffcc00;
-    }
-
-    .related-products {
-        margin-top: 50px;
-    }
-
-        .related-products h3 {
-            margin-bottom: 20px;
-        }
-
-    .related-card img {
-        width: 100%;
-        border-radius: 8px;
-    }
-
-    .related-card {
-        background-color: white;
-        border-radius: 8px;
-        padding: 10px;
-        text-align: center;
-        box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-        .related-card h5 {
-            margin-top: 10px;
-            font-size: 1rem;
-        }
-
-        .related-card p {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .related-card img {
-            width: 100%; /* Ocupa todo el ancho del contenedor */
-            height: 200px; /* Altura fija */
-            object-fit: contain; /* Ajusta la imagen dentro sin recortarla */
-            background-color: #f8f8f8; /* Fondo de relleno (opcional, da uniformidad) */
-            border-radius: 8px; /* Bordes redondeados opcionales */
-            padding: 5px; /* Espacio interno para que no quede pegada */
-        }
-
 </style>
 
-<div class="product-container">
+
+<div class="product-container container">
     <div class="product-image">
         <img src="/Home/ObtenerImagen?id=@Model.ID" alt="@Model.Nombre">
     </div>
+
     <div class="product-details">
         <h2>@Model.Nombre</h2>
         <p>@Model.Descripcion</p>
-        <p class="price">$@Model.Precio</p>
-        <button class="btn-add" data-pid="@Model.ID">Agregar al carrito</button>
+
+        <div class="product-price">
+            $@Model.Precio
+        </div>
+
+        <button class="btn-novamer-primary btn-add" data-pid="@Model.ID">Agregar al carrito</button>
 
         <div class="reviews">
-            <p>Reseñas de los compradores</p>
-            <p class="review-stars">★★★★☆ (4.0 / 5)</p>
-            <p><em>"Me encantó, es muy cómodo y fue fácil de armar, además de que se ve muy bonito y elegante, combina con todo"</em> - Emily R.</p>
+            <p>Reseñas de usuarios</p>
+            <p class="review-stars">★★★★☆ <span style="font-size:14px;">(4.0 / 5)</span></p>
+            <p><em>"Me encantó, es muy cómodo y fue fácil de armar"</em> - Emily R.</p>
         </div>
     </div>
 </div>
 
+
+
 <div class="related-products container">
-    <h3>Productos relacionados</h3>
+    <h3>Productos Relacionados</h3>
+
     <div class="row g-4">
         @foreach (var item in Model.Relacionados)
         {
-            <div class="col-md-3">
-                <div class="related-card text-center">
-                    <a href="@Url.Action("VerProducto", "Producto", new { id = item.ID })" style="text-decoration:none; color:inherit;">
+            <div class="col-md-3 col-6">
+                <a href="@Url.Action("VerProducto", "Producto", new { id = item.ID })" style="text-decoration:none; color:inherit;">
+                    <div class="related-card">
                         <img src="/Home/ObtenerImagen?id=@item.ID" alt="@item.Nombre">
                         <h5>@item.Nombre</h5>
                         <p>$@item.Precio</p>
-                    </a>
-                </div>
-
+                    </div>
+                </a>
             </div>
         }
     </div>
-
-
 </div>
 
 

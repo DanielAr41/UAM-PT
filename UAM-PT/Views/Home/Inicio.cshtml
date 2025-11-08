@@ -2,86 +2,90 @@
     ViewData["Title"] = "NovaMer.com.mx";
     Layout = "/Views/Shared/_LayoutMain.cshtml";
 }
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Productos</title>
-</head>
-<body>
-    <section class="catalogo-container">
-        <h1>Catálogo de Productos</h1>
-        <div class="productos-grid" id="productosContainer">
-            <!-- Productos se cargarán aquí -->
-        </div>
-    </section>
 
-</body>
-</html>
+<section class="catalogo-container">
+    <h1 class="titulo-catalogo">Catálogo de Productos</h1>
+
+    <div class="productos-grid" id="productosContainer">
+        <!-- Productos dinámicos -->
+    </div>
+</section>
 
 <script src="~/js/inicio.js?v=@Html.Raw(DateTime.Now.ToString("yyyyMMddHHmm"))"></script>
 
-
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #fff;
+        font-family: 'Poppins', sans-serif;
+        background-color: #ffffff;
         margin: 0;
-        padding: 20px;
+        padding: 0;
     }
 
     .catalogo-container {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
-        text-align: center;
+        padding: 40px 20px;
     }
 
-    h1 {
-        margin-bottom: 30px;
-        color: #333;
+    .titulo-catalogo {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 40px;
+        font-size: 32px;
+        color: #222;
     }
 
     .productos-grid {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 20px;
+        gap: 22px;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 
     .producto-card {
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        padding: 15px;
-        transition: transform 0.2s;
+        border-radius: 14px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        padding: 18px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        transition: transform .18s, box-shadow .18s;
     }
 
-        .producto-card:hover {
-            transform: scale(1.03);
-        }
+    .producto-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    }
 
+    .producto-card img {
+        width: 100%;
+        height: 190px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-bottom: 12px;
+    }
+
+    .producto-card h3 {
+        font-size: 18px;
+        margin: 0 0 6px;
+        font-weight: 500;
+        color: #111;
+        text-align: left;
+    }
+
+    .producto-card .precio {
+        font-size: 20px;
+        font-weight: 700;
+        color: #FF8800;
+        margin-top: auto;
+        text-align: left;
+    }
+
+    /* responsive ajustes ligeros */
+    @@media(max-width: 480px) {
         .producto-card img {
-            width: 100%;
-            border-radius: 4px;
-            height: 150px;
-            object-fit: cover;
+            height: 160px;
         }
-
-        .producto-card h3 {
-            margin: 10px 0 5px;
-            font-size: 18px;
-            color: #222;
-        }
-
-        .producto-card p {
-            font-size: 16px;
-            color: #007b5e;
-            font-weight: bold;
-        }
-
-    .producto-card {
-        cursor: pointer;
     }
 
 </style>
-

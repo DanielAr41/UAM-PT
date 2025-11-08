@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Ingresar Código";
+}
+
+<div class="recover-container">
+    <div class="recover-card">
+        <h2>Confirmar Código</h2>
+
+        @if (ViewBag.CodigoValidado == null)
+        {
+            <p class="recover-text">Ingresa el código de recuperación que recibiste.</p>
+            <form method="post">
+                <div class="input-group">
+                    <label for="codigo">Código</label>
+                    <input type="text" id="codigo" name="codigoIngresado" required maxlength="6" />
+                </div>
+
+                <button type="submit" class="btn-recover">Validar Código</button>
+            </form>
+        }
+        else
+        {
+            <p class="recover-text">Código validado correctamente. Ahora ingresa tu nueva contraseña.</p>
+            <form method="post">
+                <div class="input-group">
+                    <label>Nueva contraseña</label>
+                    <input type="password" name="nuevaPassword" required />
+                </div>
+
+                <div class="input-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" name="confirmarPassword" required />
+                </div>
+
+                <button type="submit" class="btn-recover">Guardar contraseña</button>
+            </form>
+        }
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+        }
+
+        <a href="/Auth/InicioSesion" class="back-link">← Regresar a iniciar sesión</a>
+    </div>
+</div>

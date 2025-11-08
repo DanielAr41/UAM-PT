@@ -3,23 +3,125 @@
     ViewData["Title"] = "Recuperar Contraseña";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="recover-container">
+    <div class="recover-card">
+        <h2>Recuperar Contraseña</h2>
+        <p class="recover-text">Ingresa el correo electrónico asociado a tu cuenta y te enviaremos un código de recuperación.</p>
 
-<form method="post">
-    <div class="form-group">
-        <label for="email">Correo electrónico</label>
-        <input type="email" class="form-control" id="email" name="email" required />
+        <form method="post" asp-action="RecuperarContrasenia" asp-controller="Account">
+            <div class="input-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" required />
+            </div>
+
+            <button type="submit" class="btn-recover">Enviar Código</button>
+        </form>
+        <a href="/Account/ConfirmarCodigo" class="btn-go-code">Ya tengo el código →</a>
+
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+        }
+
+        <a href="/Auth/InicioSesionn" class="back-link">← Regresar a iniciar sesión</a>
     </div>
+</div>
 
-    <button type="submit" class="btn btn-primary">Enviar código de recuperación</button>
-</form>
 
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
-}
+<style>
+    .recover-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+        background: #f5f6f8;
+    }
 
-@if (ViewBag.SuccessMessage != null)
-{
-    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
-}
+    .recover-card {
+        background: #ffffff;
+        width: 380px;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+        .recover-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+    .recover-text {
+        text-align: center;
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .input-group label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-group input {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+    .btn-recover {
+        background: #007bff;
+        border: none;
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .btn-recover:hover {
+            background: #0056c7;
+        }
+
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #007bff;
+    }
+
+    .btn-go-code {
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+        background: #28a745;
+        padding: 10px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .btn-go-code:hover {
+            background: #1f7f34;
+        }
+
+</style>
