@@ -68,6 +68,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+AppContext.SetSwitch("System.Data.SqlClient.UseManagedNetworkingOnWindows", true);
+
 // Habilitar autenticación y autorización
 app.UseAuthentication();
 app.UseSession();
