@@ -329,7 +329,7 @@ $("#formAgregarMetodo").on("submit", function (e) {
 
         // AJAX para traer métodos de pago del usuario
         $.ajax({
-            url: '/Cuenta/ObtenerMetodosPago', // Acción en tu controlador
+            url: '/Cuenta/ObtenerMetodosPago', 
             type: 'GET',
             success: function (response) {
                 if (response.length > 0) {
@@ -504,7 +504,7 @@ $("#btnRegistrarVendedor").on("click", function (e) {
     formData.append("cuentaBancaria", $("#cuentaBancaria").val());
     formData.append("identificacion", $("#identificacion")[0].files[0]);
     formData.append("comprobanteDomicilio", $("#comprobanteDomicilio")[0].files[0]);
-    debugger;
+    //debugger;
     $.ajax({
         url: '/Cuenta/RegistrarVendedor',
         type: 'POST',
@@ -513,7 +513,7 @@ $("#btnRegistrarVendedor").on("click", function (e) {
         contentType: false, 
         success: function (response) {
             if (response.success) {
-                debugger;
+                //debugger;
                 alert(response.response_msg);
                 // ejemplo: cerrar modal
                 $("#mdlRegistroVendedor").modal("hide");
