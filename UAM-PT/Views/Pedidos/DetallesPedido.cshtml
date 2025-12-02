@@ -4,18 +4,22 @@
 }
 
 @model PedidoModel
-<div class="container">
+
+<div class="pedido-wrapper container">
+
     <!-- Encabezado -->
-    <div class="header">
+    <div class="dp-header">
         <a href="@Url.Action("MisPedidos", "Pedidos")" class="back">← Regresar</a>
         <h2>Pedido <span class="order-id">#@Model.PedidoId</span></h2>
     </div>
 
-    <div class="content">
+    <div class="dp-content">
+
         <!-- Estatus del pedido -->
         <div class="status">
             <h3>Estatus del pedido</h3>
 
+            <!-- Paso 1 -->
             <div class="step @(Model.PasoActual >= 1 ? "active" : "")">
                 <div class="step-number">1</div>
                 <div class="step-info">
@@ -24,6 +28,7 @@
                 </div>
             </div>
 
+            <!-- Paso 2 -->
             <div class="step @(Model.PasoActual >= 2 ? "active" : "")">
                 <div class="step-number">2</div>
                 <div class="step-info">
@@ -32,6 +37,7 @@
                 </div>
             </div>
 
+            <!-- Paso 3 -->
             <div class="step @(Model.PasoActual >= 3 ? "active" : "")">
                 <div class="step-number">3</div>
                 <div class="step-info">
@@ -41,8 +47,10 @@
             </div>
         </div>
 
-        <!-- Detalles de entrega -->
+
+        <!-- Detalles del pedido -->
         <div class="details">
+
             <div class="delivery-date">
                 <p>Fecha del pedido:</p>
                 <strong>@Model.FechaPedido.ToString("dddd dd 'de' MMMM yyyy")</strong>
@@ -52,10 +60,12 @@
             {
                 <div class="product">
                     <img src="@Url.Action("ObtenerImagen", "Home", new { id = item.ProductoId })" alt="@item.Nombre">
+
                     <div>
-                        <p><a href="#">@item.Nombre</a></p>
+                        <p><a href="#" class="product-link">@item.Nombre</a></p>
                         <span>Cantidad: @item.Cantidad</span>
                     </div>
+
                     <span class="price">@item.Precio.ToString("C")</span>
                 </div>
             }
@@ -65,157 +75,269 @@
                 <strong>@Model.Productos.Sum(x => x.Cantidad * x.Precio).ToString("C")</strong>
             </div>
         </div>
+
     </div>
 </div>
 
+
 <style>
+    /* Fuente */
     body {
-        font-family: Arial, sans-serif;
-        background: #fff;
+        background-color: #F7F7F7; /* Blanco grisáceo */
         margin: 0;
         padding: 0;
-        color: #333;
+        font-family: 'Poppins', sans-serif;
     }
 
-    .container {
-        width: 90%;
-        max-width: 1000px;
-        margin: 20px auto;
+
+    body, .pedido-wrapper {
+        font-family: 'Poppins', sans-serif;
     }
 
-    .header {
+    .pedido-wrapper {
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    /* Header */
+    .dp-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 25px;
     }
 
     .back {
         text-decoration: none;
         color: #333;
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: 500;
+        transition: opacity .2s;
+    }
+
+    .back:hover {
+        opacity: 0.7;
     }
 
     .order-id {
-        font-weight: bold;
+        color: #FF8800;
+        font-weight: 700;
     }
 
-    .content {
+    /* Layout principal */
+    .dp-content {
         display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
+        gap: 40px;
+        flex-wrap: wrap;
     }
 
+    /* TIMELINE */
     .status {
-        width: 55%;
+        width: 100%;
+        max-width: 500px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
     }
 
-        .status h3 {
-            margin-bottom: 20px;
-        }
-
-    .step {
-        display: flex;
-        align-items: flex-start;
-        border-bottom: 1px solid #ccc;
-        padding: 10px 0;
-    }
-
-    .step-number {
-        background: #2c3e50;
-        color: #fff;
-        font-weight: bold;
-        width: 25px;
-        height: 25px;
-        border-radius: 3px;
-        text-align: center;
-        line-height: 25px;
-        margin-right: 15px;
-    }
-
-    .step-info strong {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .details {
-        width: 40%;
-    }
-
-    .delivery-date {
-        background: #ff9800;
-        color: #fff;
-        padding: 15px;
-        border-radius: 5px;
+    .status h3 {
         margin-bottom: 20px;
-        text-align: center;
+        font-weight: 600;
     }
-
-    .product {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 10px;
-    }
-
-        .product img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-
-        .product p {
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .product span {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .product .price {
-            margin-left: auto;
-            font-weight: bold;
-        }
-
-    .total {
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
-        margin-top: 15px;
-        font-weight: bold;
-    }
-
 
     .step {
         display: flex;
         align-items: flex-start;
-        border-bottom: 1px solid #ccc;
-        padding: 10px 0;
-        opacity: 0.5;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        opacity: .5;
+        transition: .3s;
     }
 
-    .step-number {
-        background: #ccc;
-        color: #fff;
-        font-weight: bold;
-        width: 25px;
-        height: 25px;
-        border-radius: 3px;
-        text-align: center;
-        line-height: 25px;
-        margin-right: 15px;
+    .step:last-child {
+        border-bottom: none;
     }
 
     .step.active {
         opacity: 1;
     }
 
-        .step.active .step-number {
-            background: #2c3e50; /* Azul oscuro */
+    .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 32px;
+        font-weight: bold;
+        color: #fff;
+        background: #BBBBBB;
+        margin-right: 15px;
+        transition: background .3s;
+    }
+
+    .step.active .step-number {
+        background: #FF8800 !important;
+    }
+
+    .step-info strong {
+        font-size: 15px;
+    }
+
+    .step-info p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+    }
+
+    /* DETALLES DEL PEDIDO */
+    .details {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .delivery-date {
+        background: #FF8800;
+        color: white;
+        padding: 18px;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 15px;
+    }
+
+    /* Product list */
+    .product {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product img {
+        width: 55px;
+        height: 55px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 15px;
+    }
+
+    .product p {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .product-link {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .product-link:hover {
+        color: #FF8800;
+    }
+
+    .product span {
+        font-size: 13px;
+        color: #777;
+    }
+
+    .price {
+        margin-left: auto;
+        font-weight: 600;
+        color: #FF8800;
+    }
+
+    .total {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    /* RESPONSIVE */
+    @@media (max-width: 768px) {
+        .dp-content {
+            flex-direction: column;
+        }
+        .details, .status {
+            max-width: 100%;
+        }
+    }
+
+    .pasos-container {
+        width: 100%;
+        background: #FFFFFF; /* Fondo blanco */
+        padding: 25px 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Elegante y suave */
+        margin-bottom: 25px;
+    }
+
+    .pasos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .paso {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 33%;
+    }
+
+        .paso .circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #FF8800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #FF8800;
+            background-color: #fff; /* Blanco para que resalte */
+            transition: 0.3s ease;
         }
 
+        .paso.active .circle {
+            background-color: #FF8800;
+            color: #fff;
+        }
+
+        .paso span {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+    /* Línea del progreso */
+    .pasos::before {
+        content: "";
+        position: absolute;
+        top: 19px;
+        left: 10%;
+        width: 80%;
+        height: 3px;
+        background: #ccc;
+        z-index: 0;
+    }
+
+    .pasos::after {
+        content: "";
+        position: absolute;
+        top: 19px;
+        left: 10%;
+        width: calc( (80% / 3) * var(--progress, 1) );
+        height: 3px;
+        background: #FF8800;
+        transition: width .4s ease;
+        z-index: 1;
+    }
 
 </style>

@@ -7,70 +7,192 @@
 @model List<UAM_PT.Models.PedidoModel>
 
 <style>
-    h1 {
-        color: #ff9800;
-    }
+/* ======= GLOBAL ======= */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f5f5;
+}
 
-    .back {
-        display: inline-flex;
-        align-items: center;
-        margin-bottom: 10px;
-        text-decoration: none;
-        color: #333;
-        font-weight: 500;
-    }
+/* ======= FILTROS ======= */
+.order-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-        .back::before {
-            content: "←";
-            margin-right: 5px;
-        }
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #eee;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 500;
+}
 
-    .order-section {
-        margin-bottom: 20px;
-    }
+.filter-btn:hover {
+    background: #ddd;
+}
 
-    .order-date {
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
+.filter-btn.active {
+    background: #FF8800;
+    color: #fff;
+}
 
+/* ===== MONTH SEPARATOR ===== */
+.month-separator {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin: 25px 0 10px 0;
+}
+
+/* ======= ORDER SECTION ======= */
+.order-section {
+    margin-bottom: 30px;
+}
+
+.order-date {
+    font-size: 15px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* ======= ORDER CARD ======= */
+.order-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 18px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border-left: 6px solid #FF8800;
+    transition: 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+}
+
+/* IMG */
+.order-image {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* INFO */
+.order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 14px;
+}
+
+/* STATUS BADGE */
+.order-badge {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 6px;
+    width: fit-content;
+    font-weight: 600;
+}
+
+.order-badge.en\ proceso {
+    background: #FFF3CD;
+    color: #856404;
+}
+
+.order-badge.entregado {
+    background: #D4EDDA;
+    color: #155724;
+}
+
+.order-badge.cancelado {
+    background: #F8D7DA;
+    color: #721C24;
+}
+
+/* CONTADOR */
+.order-count {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #555;
+}
+
+/* TIMELINE */
+.order-timeline {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+.order-timeline .circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%; 
+    border: 2px solid #ccc;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.order-timeline .circle.active {
+    background: #FF8800;
+    border-color: #FF8800;
+}
+
+.order-timeline .line {
+    width: 30px;
+    height: 2px;
+    background: #ccc;
+}
+
+/* RESPONSIVE */
+@@media(max-width: 600px) {
     .order-card {
-        display: flex;
-        align-items: center;
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin-bottom: 10px;
-        border-left: 5px solid #1a1a3f;
+        padding: 14px;
+        gap: 10px;
     }
-
     .order-image {
-        width: 80px;
-        height: 80px;
-        margin-right: 15px;
-        border-radius: 5px;
-        object-fit: cover;
+        width: 70px;
+        height: 70px;
     }
-
     .order-info {
-        display: flex;
-        flex-direction: column;
+        font-size: 13px;
+    }
+    .order-count {
+        font-size: 12px;
+    }
+}
+
+    .order-timeline .line.active {
+        background: #FF8800 !important;
     }
 
-    .order-status {
-        font-weight: bold;
-        margin-bottom: 5px;
+    .order-badge.pendiente {
+        background: #FFF3CD;
+        color: #856404;
     }
 
-    .in-process {
-        color: #f9b200;
+    .order-badge.proceso {
+        background: #DDEBFB;
+        color: #0C4A6E;
     }
-    /* Amarillo */
-    .delivered {
-        color: #4caf50;
+
+    .order-badge.entregado {
+        background: #D4EDDA;
+        color: #155724;
     }
-    /* Verde */
+
+
 </style>
     <a href="/Home/Inicio" class="back">Regresar</a>
 
@@ -86,10 +208,30 @@
             <a href="@Url.Action("DetallesPedido", "Pedidos", new { pedidoId = pedido.PedidoId })" class="order-card">
                 <img src="@Url.Action("ObtenerImagen", "Home", new { id = item.ProductoId })" alt="@item.Nombre" class="order-image">
                 <div class="order-info">
-                    <span class="order-status @(pedido.Estatus == "Entregado" ? "delivered" : "in-process")">
-                        @pedido.Estatus
-                    </span>
-                    <span>@item.Cantidad @((item.Cantidad > 1) ? "productos" : "Producto")</span>
+                    <div class="order-badge
+                        @(pedido.PasoActual == 1 ? "pendiente" :
+                          pedido.PasoActual == 2 ? "proceso" :
+                          "entregado")">
+
+                        @(pedido.Estatus == "Pendiente" ? "⏳ Pendiente" :
+                            pedido.Estatus == "Procesado" ? "📦 Procesado" :
+                            pedido.Estatus == "Enviado" ? "🚚 Enviado" :
+                            "✔ Entregado")
+                    </div>
+
+
+                    <div class="order-timeline">
+                        <div class="circle @(pedido.PasoActual >= 1 ? "active" : "")"></div>
+                        <div class="line @(pedido.PasoActual >= 2 ? "active" : "")"></div>
+
+                        <div class="circle @(pedido.PasoActual >= 2 ? "active" : "")"></div>
+                        <div class="line @(pedido.PasoActual >= 3 ? "active" : "")"></div>
+
+                        <div class="circle @(pedido.PasoActual == 3 ? "active" : "")"></div>
+                    </div>
+
+
+                    <span class="order-count">🛒 @item.Cantidad artículos</span>
                 </div>
             </a>
 
