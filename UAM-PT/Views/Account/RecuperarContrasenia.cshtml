@@ -16,8 +16,6 @@
 
             <button type="submit" class="btn-recover">Enviar Código</button>
         </form>
-        <a href="/Account/ConfirmarCodigo" class="btn-go-code">Ya tengo el código →</a>
-
 
         @if (ViewBag.ErrorMessage != null)
         {
@@ -29,9 +27,20 @@
             <div class="alert alert-success">@ViewBag.SuccessMessage</div>
         }
 
-        <a href="/Auth/InicioSesionn" class="back-link">← Regresar a iniciar sesión</a>
+        <a href="/Auth/InicioSesionn" class="back-link">← Regresar</a>
     </div>
 </div>
+
+
+@if (ViewBag.Redireccionar == true)
+{
+    <script>
+        setTimeout(function () {
+            window.location.href = "/Account/ConfirmarCodigo";
+        }, 5000);
+    </script>
+}
+
 
 
 <style>

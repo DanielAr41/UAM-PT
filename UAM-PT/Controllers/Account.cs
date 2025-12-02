@@ -21,9 +21,7 @@ namespace UAM_PT.Controllers
         {
             var usuario = _context.Usuarios.FirstOrDefault(x => x.Correo == email);
 
-            bool existeUsuario = usuario == null ? false : true;
-
-            if (!existeUsuario)
+            if (usuario == null)
             {
                 ViewBag.ErrorMessage = "El correo no está registrado";
                 return View();
@@ -31,13 +29,20 @@ namespace UAM_PT.Controllers
 
             string codigo = new Random().Next(100000, 999999).ToString();
 
-
             HttpContext.Session.SetString("CodigoRecuperacion", codigo);
             HttpContext.Session.SetString("EmailRecuperacion", email);
 
-            // No se envía correo real, solo se muestra el mensaje
+            // Se muestra el código simulado
             ViewBag.SuccessMessage = $"Código generado: {codigo}";
+            ViewBag.Redireccionar = true; // <- para activar el auto-redirect
 
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult RecuperarContrasenia()
+        {
+            // Solo muestra el formulario sin mensajes
             return View();
         }
 
@@ -79,28 +84,24 @@ namespace UAM_PT.Controllers
         {
             string codigoGuardado = HttpContext.Session.GetString("CodigoRecuperacion");
 
-            // Si vienen passwords significa que ya validamos y ahora estamos cambiando
             if (!string.IsNullOrEmpty(nuevaPassword) && !string.IsNullOrEmpty(confirmarPassword))
             {
                 if (nuevaPassword != confirmarPassword)
                 {
                     ViewBag.ErrorMessage = "Las contraseñas no coinciden.";
-                    ViewBag.CodigoValidado = true; // para volver a mostrar inputs de contraseña
+                    ViewBag.CodigoValidado = true;
                     return View();
                 }
 
-                // aquí simulas guardado en BD
-                // luego borras codigo de sesión
                 HttpContext.Session.Remove("CodigoRecuperacion");
 
                 ViewBag.SuccessMessage = "La contraseña fue cambiada exitosamente";
                 return View();
             }
 
-            // Validación del código
             if (codigoIngresado == codigoGuardado)
             {
-                ViewBag.CodigoValidado = true; // señal a la vista para mostrar inputs
+                ViewBag.CodigoValidado = true;
                 return View();
             }
             else
