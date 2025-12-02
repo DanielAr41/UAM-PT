@@ -24,9 +24,9 @@ function traeProductos() {
                         <p class="product-price">$${producto.precio.toFixed(2)}</p>
                     </div>
                 `;
-                container.append(card);
+                container.append($(card).hide());
             });
-
+            mostrarMasProductos();
         },
         error: function () {
             $("#productosContainer").html("<p>Error al cargar productos.</p>");
@@ -58,4 +58,24 @@ $(document).on("click", ".producto-card", function () {
     window.location.href = '/Producto/VerProducto?id=' + productId;
 });
 
+let productosMostrados = 0;
+const productosPorPagina = 12;
 
+$(document).on('click', '#btnVerMas', function () {
+    mostrarMasProductos();
+});
+
+
+function mostrarMasProductos() {
+    const cards = $('#productosContainer .producto-card');
+
+    for (let i = productosMostrados; i < productosMostrados + productosPorPagina; i++) {
+        $(cards[i]).fadeIn();
+    }
+
+    productosMostrados += productosPorPagina;
+
+    if (productosMostrados >= cards.length) {
+        $('#btnVerMas').hide();
+    }
+}
