@@ -5,31 +5,9 @@
 }
 
 <style>
-    .btnNaranja {
-        background-color: #fff;
-        border-color: #FF8800;
-        color: #FF8800;
-    }
-
-        .btnNaranja:hover {
-            background-color: #FF8800;
-            border-color: #FF8800;
-            color: #fff;
-        }
-
-    #AddProducto[disabled] {
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
-
-        .tituloNaranja{
-        color: #FF8800;
-        font-size:25px;
-        
-        }
-
-
-
+    /* ------------------------------
+       ESTILOS GENERALES
+    ---------------------------------*/
     * {
         box-sizing: border-box;
         margin: 0;
@@ -38,114 +16,158 @@
     }
 
     body {
-        background-color: #fff7f3;
+        background-color: #fafafa; /* Blanco suave */
         color: #333;
     }
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-        background-color: #fff1e8;
+    /* ------------------------------
+       BOTONES
+    ---------------------------------*/
+    .btnNaranja {
+        background-color: #fff;
+        border: 2px solid #FF8800;
+        color: #FF8800;
+        transition: 0.3s;
     }
 
-    .logo {
-        height: 40px;
-    }
-
-    .user-menu {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-        .user-menu a {
-            text-decoration: none;
-            color: #000;
+        .btnNaranja:hover {
+            background-color: #FF8800;
+            color: #fff;
         }
 
-    .avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+    #AddProducto[disabled] {
+        background-color: #bfbfbf;
+        border-color: #bfbfbf;
+        color: #fff;
     }
 
+    .btn-new,
+    .btn-vermas {
+        background-color: #FF8800;
+        border: none;
+        color: #fff;
+        border-radius: 10px;
+        padding: 0.6rem 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-new:hover,
+        .btn-vermas:hover {
+            background-color: #e37300;
+        }
+
+    /* ------------------------------
+       HEADER VENDEDOR
+    ---------------------------------*/
+    .header {
+        background-color: #ffffff;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* ------------------------------
+       BANNER
+    ---------------------------------*/
     .banner img {
         width: 100%;
-        height: 200px;
+        height: 260px;
         object-fit: cover;
+        border-radius: 10px;
     }
 
+    /* ------------------------------
+       PERFIL
+    ---------------------------------*/
     .profile {
         text-align: center;
-        padding: 1.5rem;
+        padding: 2rem 1rem;
     }
 
     .profile-img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
+        border: 4px solid #FF8800;
+        object-fit: cover;
         margin-bottom: 1rem;
+    }
+
+    .profile h2 {
+        font-size: 26px;
+        margin-bottom: 5px;
+    }
+
+    .profile p {
+        color: #777;
     }
 
     .stats {
         display: flex;
         justify-content: center;
         gap: 2rem;
-        margin: 1rem 0;
-        font-size: 14px;
+        margin: 1.5rem 0;
     }
 
-    .btn-new {
-        background-color: #ff9a00;
-        color: white;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-    }
+        .stats span {
+            font-size: 14px;
+            color: #444;
+        }
 
+    /* ------------------------------
+       TABS
+    ---------------------------------*/
     .tabs {
         display: flex;
         justify-content: center;
-        gap: 1.5rem;
+        gap: 2rem;
         padding: 1rem;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
         font-weight: 600;
+        border-bottom: 1px solid #ddd;
+        background: #fff;
     }
 
         .tabs a {
+            color: #555;
             text-decoration: none;
-            color: #333;
+            padding-bottom: 4px;
         }
 
         .tabs .active {
-            border-bottom: 2px solid #ff9a00;
-            color: #ff9a00;
+            border-bottom: 2px solid #FF8800;
+            color: #FF8800;
         }
 
+    /* ------------------------------
+       PRODUCTOS
+    ---------------------------------*/
     .products {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         gap: 1.5rem;
         padding: 2rem;
     }
 
     .product-card {
-        background-color: white;
-        border-radius: 12px;
+        background: #fff;
+        border-radius: 14px;
         padding: 1rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        transition: 0.2s;
         position: relative;
     }
 
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+    /* Imagen */
     .product-image {
         position: relative;
-        height: 150px;
+        height: 160px;
+        border-radius: 10px;
         overflow: hidden;
-        border-radius: 8px;
         margin-bottom: 1rem;
     }
 
@@ -155,50 +177,281 @@
             object-fit: cover;
         }
 
+    /* Botón editar */
     .edit-btn {
         position: absolute;
-        top: 8px;
-        right: 8px;
-        background: #fff;
+        top: 10px;
+        right: 10px;
+        background: #ffffffdd;
         border: none;
         border-radius: 50%;
+        padding: 5px;
         cursor: pointer;
-        font-size: 16px;
+        transition: 0.3s;
+    }
+
+        .edit-btn:hover {
+            background: #FF8800;
+            color: white;
+        }
+
+    /* Información */
+    .product-card h3 {
+        font-size: 18px;
+        margin-bottom: 3px;
+        color: #333;
+    }
+
+    .product-card p {
+        font-size: 14px;
+        color: #666;
     }
 
     .info {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 0.5rem;
-        font-size: 14px;
+        margin-top: 0.8rem;
     }
 
     .rating {
         background-color: #eee;
-        padding: 2px 6px;
+        padding: 3px 8px;
         border-radius: 12px;
+        font-size: 12px;
     }
 
-    .btn-vermas {
-        background-color: #ff9a00;
-        color: white;
-        padding: 0.6rem 1.5rem;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
+    /* ------------------------------
+       VER MÁS
+    ---------------------------------*/
     .ver-mas-container {
         text-align: center;
         margin: 2rem 0;
     }
 
     .footer {
-        text-align: center;
         padding: 1rem;
+        text-align: center;
         font-size: 13px;
-        color: #999;
+        color: #888;
+    }
+
+    /* ------------------------------
+       MODALES
+    ---------------------------------*/
+    .tituloNaranja {
+        color: #FF8800;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .inactive-btn {
+        position: absolute;
+        top: 10px;
+        right: 45px;
+        background: #ffffffdd;
+        border: none;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .inactive-btn:hover {
+            background: #d9534f;
+            color: white;
+        }
+
+
+    .activate-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ffffffdd;
+        border: none;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .activate-btn:hover {
+        background: green;
+        color: white;
+    }
+
+
+    /* ------------------------------
+           MODAL AGREGAR PRODUCTO
+        ---------------------------------*/
+    #mdlAddProducto .btn-secondary {
+        border-radius: 8px;
+    }
+
+    #mdlAddProducto .modal-content {
+        border-radius: 14px;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        animation: modalFadeIn 0.3s ease;
+    }
+
+    /* Animación suave */
+    @@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* ---- Header ---- */
+    #mdlAddProducto .modal-header {
+    background: #fff;
+    border-bottom: 2px solid #f5f5f5;
+    padding: 1rem 1.5rem;
+    }
+
+    #mdlAddProducto .modal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    }
+
+    /* ---- Botón cerrar ---- */
+    #mdlAddProducto .modal-header .btn i {
+    font-size: 1.6rem;
+    transition: 0.2s ease;
+    }
+
+    #mdlAddProducto .modal-header .btn:hover i {
+    transform: scale(1.15);
+    color: #cc6e00 !important;
+    }
+
+    /* ---- Inputs ---- */
+    #mdlAddProducto .form-control,
+    #mdlAddProducto .form-select {
+    border-radius: 10px;
+    border-color: #ddd;
+    padding: 0.55rem 0.9rem;
+    transition: 0.2s;
+    }
+
+    #mdlAddProducto .form-control:focus,
+    #mdlAddProducto .form-select:focus {
+    border-color: #ff8800;
+    box-shadow: 0 0 0 0.15rem rgba(255,136,0,0.25);
+    }
+
+    /* ---- Footer ---- */
+    #mdlAddProducto .modal-footer {
+    border-top: 2px solid #f5f5f5;
+    padding: 1rem 1.5rem;
+    }
+
+    #mdlAddProducto .btnNaranja {
+        background-color: #ff8800 !important;
+        color: #fff;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.2rem !important;
+        font-weight: 600;
+        transition: 0.2s ease !important;
+    }
+
+        #mdlAddProducto .btnNaranja:hover {
+            background-color: #e67600 !important;
+            transform: translateY(-1px);
+        }
+
+    .file-upload-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fafafa;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 2px dashed #ff8800;
+        cursor: pointer;
+        transition: 0.2s ease;
+        position: relative;
+    }
+
+        .file-upload-box:hover {
+            background: #fff3e6;
+        }
+
+    /* Icono */
+    .upload-icon {
+        font-size: 2rem;
+        color: #ff8800;
+    }
+
+    /* Nombre archivo */
+    #file-name {
+        flex-grow: 1;
+        font-size: 0.95rem;
+        color: #7a7a7a;
+    }
+
+    /* Botón Upload */
+    .btn-upload-trigger {
+        background: #ff8800;
+        border: none;
+        padding: 6px 15px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+        .btn-upload-trigger:hover {
+            background: #d97300;
+        }
+
+    /* Input original oculto */
+    #productoImagen {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* ----- INPUTS CON ÍCONOS ----- */
+    .input-icon {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #ff8800;
+        }
+
+        .input-icon .form-control,
+        .input-icon .form-select {
+            padding-left: 42px !important;
+            border-radius: 10px;
+        }
+
+    /* Para textarea */
+    .textarea-icon i {
+        top: 18px;
+    }
+
+    /* Focus */
+    .input-icon .form-control:focus,
+    .input-icon .form-select:focus,
+    .textarea-icon textarea:focus {
+        border-color: #ff8800;
+        box-shadow: 0 0 0 0.15rem rgba(255,136,0,0.25);
+    }
+
+    #previewProductoImg {
+        border-radius: 12px;
+        object-fit: cover;
+        background: #fafafa;
+        padding: 6px;
     }
 
 </style>
@@ -214,11 +467,11 @@
 
 
 <section class="banner">
-    <img src="~/images/banner.png" alt="Banner" />
+    <img src="~/images/banner2.jpg" alt="Banner" />
 </section>
 
 <section class="profile">
-    <img src="~/images/Furina.webp" alt="Usuario" class="profile-img" />
+    <img src="~/images/HollowKnight.webp" alt="Usuario" class="profile-img" />
     <h2>Tus productos</h2>
     <p>Ciudad de México, México</p>
     <div class="stats">
@@ -230,10 +483,10 @@
 </section>
 
 <nav class="tabs">
-    <a href="#" class="active">Todos</a>
+    <a href="#" class="active" id="tab-todos">Todos</a>
     <a href="#">Resumen de Ventas</a>
     <a href="#">Más vendidos</a>
-    <a href="#">Inactivos</a>
+    <a href="#" id="tab-inactivos">Inactivos</a>
 </nav>
 
 <main id="contenedor-productos" class="products">
@@ -251,6 +504,9 @@
     </div> *@
 </main>
 
+<div id="contenedor-inactivos" class="contenedor-productos products"></div>
+
+
 <div class="ver-mas-container">
     <button class="btn-vermas">Ver más</button>
 </div>
@@ -262,72 +518,110 @@
 
             <div class="modal-header">
                 <h5 class="modal-title tituloNaranja" id="mdlAddProductoLabel">Nuevo Producto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Cerrar">
+                    <i class="bi bi-x-circle-fill" style="color:#FF8800"></i>
+                </button>
+
             </div>
 
             <div class="modal-body">
                 <form id="formAddProducto" enctype="multipart/form-data">
 
                     <!-- Imagen -->
-                    <div class="mb-3">
+                    <div class="file-upload-wrapper mb-3">
                         <label for="productoImagen" class="form-label text-center d-block">Imagen del producto</label>
-                        <input type="file" class="form-control" id="productoImagen" name="Imagen" accept="image/*">
+
+                        <div class="file-upload-box">
+                            <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+
+                            <span id="file-name">Selecciona una imagen...</span>
+
+                            <button type="button" class="btn-upload-trigger">Subir</button>
+
+                            <!-- Tu input original (oculto) -->
+                            <input type="file" class="form-control" id="productoImagen" name="Imagen" accept="image/*">
+
+                            <!-- Preview de imagen -->
+                            <div class="text-center mt-2">
+                                <img id="previewProductoImg" src="#" alt="Vista previa" class="img-thumbnail d-none" style="max-height: 180px;">
+                            </div>
+
+                        </div>
                     </div>
+
 
                     <!-- Nombre y SKU -->
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="productoNombre" class="form-label">Nombre del producto</label>
-                            <input type="text" class="form-control" id="productoNombre" name="Nombre" required>
+                            <div class="input-icon">
+                                <i class="bi bi-tag"></i>
+                                <input type="text" class="form-control" id="productoNombre" name="Nombre" required placeholder="Nombre del producto">
+                            </div>
+
                         </div>
                         <div class="col">
-                            <label for="productoSKU" class="form-label">SKU</label>
-                            <input type="text" class="form-control" id="productoSKU" name="SKU">
+                            <div class="input-icon">
+                                <i class="bi bi-upc-scan"></i>
+                                <input type="text" class="form-control" id="productoSKU" name="SKU" placeholder="SKU">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Precio y Categoría -->
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="productoPrecio" class="form-label">Precio</label>
-                            <input type="number" step="0.01" class="form-control" id="productoPrecio" name="Precio" required>
+                            <div class="input-icon">
+                                <i class="bi bi-cash-stack"></i>
+                                <input type="number" step="0.01" class="form-control" id="productoPrecio" name="Precio" required placeholder="Precio">
+                            </div>
+
                         </div>
                         <div class="col">
-                            <label for="productoCategoria" class="form-label">Categoría</label>
-                            <select class="form-select" id="productoCategoria" name="CategoriaID" required>
-                                <option value="" selected>Selecciona una categoría</option>
-                            </select>
+                            <div class="input-icon">
+                                <i class="bi bi-list-ul"></i>
+                                <select class="form-select" id="productoCategoria" name="CategoriaID" required></select>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Peso y Stock -->
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="productoPeso" class="form-label">Peso (kg)</label>
-                            <input type="number" step="0.01" class="form-control" id="productoPeso" name="Peso">
+                            <div class="input-icon">
+                                <i class="bi bi-weight"></i>
+                                <input type="number" step="0.01" class="form-control" id="productoPeso" name="Peso" placeholder="Peso">
+                            </div>
                         </div>
                         <div class="col">
-                            <label for="productoStock" class="form-label">Stock</label>
-                            <input type="number" class="form-control" id="productoStock" name="Stock">
+                            <div class="input-icon">
+                                <i class="bi bi-box-seam"></i>
+                                <input type="number" class="form-control" id="productoStock" name="Stock" placeholder="Stock">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Descuento y Precio con descuento -->
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="productoDescuento" class="form-label">Descuento (%)</label>
-                            <input type="number" step="0.01" class="form-control" id="productoDescuento" name="descuento">
+                            <div class="input-icon">
+                                <i class="bi bi-percent"></i>
+                                <input type="number" step="0.01" class="form-control" id="productoDescuento" name="descuento" placeholder="Descuento (%)">
+                            </div>
                         </div>
                         <div class="col">
-                            <label for="productoPrecioDescuento" class="form-label">Precio con descuento</label>
-                            <input type="number" step="0.01" class="form-control" id="productoPrecioDescuento" name="precio_descuento">
+                            <div class="input-icon">
+                                <i class="bi bi-cash"></i>
+                                <input type="number" step="0.01" class="form-control" id="productoPrecioDescuento" name="precio_descuento" placeholder="Precio con descuento">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Descripción -->
                     <div class="mb-3">
-                        <label for="productoDescripcion" class="form-label">Descripción del producto</label>
-                        <textarea class="form-control" id="productoDescripcion" name="Descripcion" rows="3"></textarea>
+                        <div class="input-icon textarea-icon">
+                            <i class="bi bi-text-paragraph"></i>
+                            <textarea class="form-control" id="productoDescripcion" name="Descripcion" rows="3" placeholder="Descripción del producto"></textarea>
+                        </div>
                     </div>
 
                 </form>

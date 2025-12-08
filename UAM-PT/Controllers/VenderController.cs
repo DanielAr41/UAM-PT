@@ -175,6 +175,40 @@ namespace UAM_PT.Controllers
             }
         }
 
+        public ActionResult ObtenProductosInactivos(Guid usuarioId)
+        {
+            using (var ctx = new NovaMerEntities2())
+            {
+                var vendedor = ctx.Vendedors.FirstOrDefault(v => v.UsuarioID == usuarioId);
+
+                if (vendedor == null)
+                {
+                    return Json(new { error = "No se encontró el vendedor" });
+                }
+
+                var productos = ctx.Productoes
+                    .Where(x => x.VendedorID == vendedor.ID && x.Activo == false)
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.ID,
+                        x.Nombre,
+                        x.Precio,
+                        x.SKU,
+                        x.Stock,
+                        x.Peso,
+                        x.Descripcion,
+                        x.FechaRegistro,
+                        x.VendedorID,
+                        x.CategoriaID,
+                        ImagenUrl = "/Vender/ObtenerImagen?id=" + x.ID + "&v=" + x.FechaRegistro.Ticks
+                    });
+
+                return Json(productos);
+            }
+        }
+
+
         public ActionResult ObtenerImagen(Guid id)
         {
             using (var db = new NovaMerEntities2())
@@ -270,6 +304,43 @@ namespace UAM_PT.Controllers
 
                 ctx.SaveChanges();
                 return Json(new { success = true, message = "Producto actualizado correctamente" });
+            }
+        }
+
+        public ActionResult InactivarProducto(Guid productoId)
+        {
+            using (var ctx = new NovaMerEntities2())
+            {
+                var producto = ctx.Productoes.FirstOrDefault(p => p.ID == productoId && p.Activo == true);
+                if (producto == null)
+                {
+                    return Json(new { success = false, message = "Producto no encontrado" });
+                }
+
+                
+                producto.Activo = false;
+
+                
+
+                ctx.SaveChanges();
+                return Json(new { success = true, message = "Producto deshabilitado correctamente" });
+            }
+        }
+
+        public ActionResult ActivarProducto(Guid productoId)
+        {
+            using (var ctx = new NovaMerEntities2())
+            {
+                var producto = ctx.Productoes.FirstOrDefault(p => p.ID == productoId && p.Activo == false);
+                if (producto == null)
+                {
+                    return Json(new { success = false, message = "Producto no encontrado" });
+                }
+
+                producto.Activo = true;
+
+                ctx.SaveChanges();
+                return Json(new { success = true, message = "Producto habilitado correctamente" });
             }
         }
 
