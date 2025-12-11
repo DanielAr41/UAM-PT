@@ -533,3 +533,27 @@ $("#rfc").on("input", function () {
         $(this).val($(this).val().substring(0, 13));
     }
 });
+
+function previewFile(inputId, imgId, labelId) {
+    const input = document.getElementById(inputId);
+    const img = document.getElementById(imgId);
+    const label = document.getElementById(labelId);
+
+    input.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (file) {
+            label.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                img.src = e.target.result;
+                img.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+previewFile("identificacion", "previewIdentificacion", "file-name-identificacion");
+previewFile("comprobanteDomicilio", "previewComprobante", "file-name-comprobante");

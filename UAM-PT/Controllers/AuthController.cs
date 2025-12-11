@@ -167,6 +167,15 @@ namespace UAM_PT.Controllers
         {
             return View();
         }
+
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();    
+            HttpContext.Session.Remove("VendedorId");
+
+            return RedirectToAction("InicioSesion", "Auth");
+        }
+
     }
 }
 

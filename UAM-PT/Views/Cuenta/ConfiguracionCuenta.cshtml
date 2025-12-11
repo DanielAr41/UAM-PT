@@ -163,6 +163,125 @@ h4 {
     }
 }
 
+    /* ---------------------------- */
+    /* ESTILO PARA MODAL REGISTRO   */
+    /* ---------------------------- */
+    #mdlRegistroVendedor .modal-content {
+        border-radius: 14px;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        animation: modalFadeIn 0.3s ease;
+    }
+
+    #mdlRegistroVendedor .modal-header {
+        background: #fff;
+        border-bottom: 2px solid #f5f5f5;
+        padding: 1rem 1.5rem;
+    }
+
+    #mdlRegistroVendedor .modal-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #FF8800;
+    }
+
+    /* Botón cerrar */
+    #mdlRegistroVendedor .btn-close {
+        filter: invert(56%) sepia(72%) saturate(970%) hue-rotate(359deg) brightness(102%) contrast(101%);
+        transition: 0.2s ease;
+    }
+
+        #mdlRegistroVendedor .btn-close:hover {
+            transform: scale(1.15);
+        }
+
+    /* Inputs con icono */
+    #mdlRegistroVendedor .input-icon {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+        #mdlRegistroVendedor .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #ff8800;
+        }
+
+        #mdlRegistroVendedor .input-icon .form-control {
+            padding-left: 42px !important;
+            border-radius: 10px;
+            border-color: #ddd;
+        }
+
+    #mdlRegistroVendedor .form-control:focus {
+        border-color: #ff8800;
+        box-shadow: 0 0 0 0.15rem rgba(255,136,0,0.25);
+    }
+
+    /* Caja de upload tipo producto */
+    #mdlRegistroVendedor .file-upload-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fafafa;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 2px dashed #ff8800;
+        cursor: pointer;
+        transition: 0.2s ease;
+        position: relative;
+    }
+
+        #mdlRegistroVendedor .file-upload-box:hover {
+            background: #fff3e6;
+        }
+
+    #mdlRegistroVendedor .upload-icon {
+        font-size: 2rem;
+        color: #ff8800;
+    }
+
+    #mdlRegistroVendedor #file-name-identificacion,
+    #mdlRegistroVendedor #file-name-comprobante {
+        flex-grow: 1;
+        font-size: 0.95rem;
+        color: #7a7a7a;
+    }
+
+    #mdlRegistroVendedor .btn-upload-trigger {
+        background: #ff8800;
+        border: none;
+        padding: 6px 15px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+        #mdlRegistroVendedor .btn-upload-trigger:hover {
+            background: #d97300;
+        }
+
+    /* Input real oculto */
+    #mdlRegistroVendedor input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* Preview */
+    #mdlRegistroVendedor .preview-img {
+        border-radius: 12px;
+        object-fit: cover;
+        background: #fafafa;
+        padding: 6px;
+        max-height: 200px;
+        display: none;
+    }
 
 </style>
 
@@ -449,7 +568,9 @@ h4 {
             <!-- Encabezado -->
             <div class="modal-header">
                 <h5 class="modal-title" id="documentosModalLabel">Datos del Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Cerrar">
+                    <i class="bi bi-x-circle-fill" style="color:#FF8800"></i>
+                </button>
             </div>
 
             <!-- Cuerpo -->
@@ -457,40 +578,65 @@ h4 {
                 <form id="documentosForm">
 
                     <!-- RFC -->
-                    <div class="mb-3">
-                        <label for="rfc" class="form-label">RFC</label>
-                        <input type="text" class="form-control" id="rfc" name="rfc" maxlength="13" placeholder="Ingrese RFC">
+                    <div class="input-icon">
+                        <i class="bi bi-person-vcard"></i>
+                        <input type="text" class="form-control" id="rfc" name="rfc" maxlength="13"
+                               placeholder="RFC">
                     </div>
 
                     <!-- CURP -->
-                    <div class="mb-3">
-                        <label for="curp" class="form-label">CURP</label>
-                        <input type="text" class="form-control" id="curp" name="curp" placeholder="Ingrese CURP">
+                    <div class="input-icon">
+                        <i class="bi bi-person-badge"></i>
+                        <input type="text" class="form-control" id="curp" name="curp"
+                               placeholder="CURP">
                     </div>
 
                     <!-- Cuenta Bancaria -->
-                    <div class="mb-3">
-                        <label for="cuentaBancaria" class="form-label">Cuenta Bancaria</label>
-                        <input type="text" class="form-control" id="cuentaBancaria" name="cuentaBancaria" placeholder="Ingrese Cuenta Bancaria">
+                    <div class="input-icon">
+                        <i class="bi bi-credit-card"></i>
+                        <input type="text" class="form-control" id="cuentaBancaria" name="cuentaBancaria"
+                               placeholder="Cuenta bancaria">
                     </div>
 
                     <!-- Recuadros de previsualización -->
-                    <div class="row">
-                        <div class="col-md-6 text-center">
+                    <div class="row mt-4">
+
+                        <!-- Identificación -->
+                        <div class="col-md-6">
                             <label class="form-label fw-bold">Identificación</label>
-                            <div class="border rounded p-2 mb-2" style="height: 200px; display: flex; align-items: center; justify-content: center;">
-                                <img id="previewIdentificacion" src="" alt="Previsualización" style="max-height: 100%; max-width: 100%; display: none;">
+
+                            <div class="file-upload-box mb-2">
+                                <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+
+                                <span id="file-name-identificacion">Subir identificación...</span>
+
+                                <button type="button" class="btn-upload-trigger">Subir</button>
+
+                                <input type="file" id="identificacion" accept="image/*">
+
                             </div>
-                            <input type="file" class="form-control" id="identificacion" accept="image/*">
+
+                            <img id="previewIdentificacion" class="preview-img img-thumbnail">
                         </div>
 
-                        <div class="col-md-6 text-center">
+                        <!-- Comprobante -->
+                        <div class="col-md-6">
                             <label class="form-label fw-bold">Comprobante de domicilio</label>
-                            <div class="border rounded p-2 mb-2" style="height: 200px; display: flex; align-items: center; justify-content: center;">
-                                <img id="previewComprobante" src="" alt="Previsualización" style="max-height: 100%; max-width: 100%; display: none;">
+
+                            <div class="file-upload-box mb-2">
+                                <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+
+                                <span id="file-name-comprobante">Subir comprobante...</span>
+
+                                <button type="button" class="btn-upload-trigger">Subir</button>
+
+                                <input type="file" id="comprobanteDomicilio" accept="image/*">
+
                             </div>
-                            <input type="file" class="form-control" id="comprobanteDomicilio" accept="image/*">
+
+                            <img id="previewComprobante" class="preview-img img-thumbnail">
                         </div>
+
                     </div>
 
                 </form>
@@ -499,12 +645,12 @@ h4 {
             <!-- Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="documentosForm" id="btnRegistrarVendedor" class="btn btn-primary">Aceptar</button>
+                <button type="submit" form="documentosForm" id="btnRegistrarVendedor" class="btn btnNaranja">Aceptar</button>
             </div>
 
         </div>
     </div>
 </div>
-<!-- End Modal-->
+
 
 <script src="~/js/ConfiguracionCuenta.js"></script>

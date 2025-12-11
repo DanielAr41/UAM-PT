@@ -41,8 +41,10 @@ $('#CerrarSesion').on('click', function () {
     localStorage.removeItem('token');
     localStorage.removeItem('usuarioId');
     localStorage.removeItem('vendedorId');
-    window.location.href = '/Auth/InicioSesion';
+
+    window.location.href = '/Auth/CerrarSesion';
 });
+
 
 
 $(document).on('click', '.carrito', function () {
@@ -79,3 +81,31 @@ function mostrarMasProductos() {
         $('#btnVerMas').hide();
     }
 }
+
+
+// Evento: cuando se escribe en el buscador
+$(document).on("input", "#buscador", function () {
+    const texto = $(this).val().toLowerCase();
+
+    // Oculta todos los productos
+    $(".producto-card").hide();
+
+    // Filtra
+    const filtrados = $(".producto-card").filter(function () {
+        const nombre = $(this).find(".product-title").text().toLowerCase();
+        return nombre.includes(texto);
+    });
+
+    filtrados.fadeIn();
+
+    // Si hay filtro se oculta "Ver más"
+    if (texto.length > 0) {
+        $("#btnVerMas").hide();
+    } else {
+        // Si el input está vacío se muestra paginación normal
+        productosMostrados = 0;
+        $("#productosContainer .producto-card").hide();
+        mostrarMasProductos();
+        $("#btnVerMas").show();
+    }
+});

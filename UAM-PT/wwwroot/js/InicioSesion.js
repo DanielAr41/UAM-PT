@@ -38,12 +38,25 @@ $(document).on('click', '#Ingresar', function (e) {
                 localStorage.setItem("vendedorId", response.vendedorId);
                 
                 window.location.href = "/Home/Inicio";
-            } else {
-                alert(response.message);
             }
         },
-        error: function () {
-            alert("Ocurrió un error en el servidor");
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                Swal.fire({
+                    title: "Credenciales incorrectas",
+                    text: "El usuario o la contraseña son incorrectos.",
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#FF8800"
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Ocurrió un error en el servidor.",
+                    icon: "error",
+                    confirmButtonText: "Aceptar"
+                });
+            }
         },
         complete: function () {
             $('#Ingresar').prop('disabled', false);
